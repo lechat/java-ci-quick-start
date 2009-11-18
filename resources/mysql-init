@@ -1,0 +1,10 @@
+USE mysql;
+UPDATE mysql.user SET Password=PASSWORD('qu1ckstart') WHERE User='root';
+FLUSH PRIVILEGES;
+DELETE FROM user WHERE User='wikiuser';
+FLUSH PRIVILEGES;
+CREATE USER 'wikiuser'@'localhost' IDENTIFIED BY 'w1kiuser';
+FLUSH PRIVILEGES;
+DROP DATABASE IF EXISTS `wikidb`;
+CREATE DATABASE `wikidb` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+GRANT ALL PRIVILEGES ON wikidb.* to 'wikiuser'@'%' IDENTIFIED BY 'w1kiuser' WITH GRANT OPTION ;

@@ -1,0 +1,11 @@
+LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
+LoadModule proxy_ajp_module /usr/lib/apache2/modules/mod_proxy_ajp.so
+LoadModule proxy_http_module /usr/lib/apache2/modules/mod_proxy_http.so
+ProxyPreserveHost on
+
+<Location /artifactory/>
+    # Use with Tomcat with the AJP connector
+    ProxyPass ajp://localhost:8009/artifactory/
+    ProxyPassReverse ajp://localhost:8009/artifactory/
+</Location>
+

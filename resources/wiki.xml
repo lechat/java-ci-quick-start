@@ -1,0 +1,219 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>Wiki</sitename>
+    <base>http://lechat/wiki/index.php/Main_Page</base>
+    <generator>MediaWiki 1.13.3</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">Wiki</namespace>
+      <namespace key="5">Wiki talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Main Page</title>
+    <id>1</id>
+    <revision>
+      <id>3</id>
+      <timestamp></timestamp>
+      <contributor>
+        <ip>192.168.181.2</ip>
+      </contributor>
+      <text xml:space="preserve">&lt;big&gt;'''Welcome to Capgemini CSD Quick Start!'''&lt;/big&gt;
+
+* [[Configuration guide]]
+* [[Project guide]]
+* [[Best practices]]
+
+== How to use and configure Wiki ==
+* [http://meta.wikimedia.org/wiki/Help:Contents User's Guide]
+* [http://www.mediawiki.org/wiki/Manual:Configuration_settings Configuration settings list]
+* [http://www.mediawiki.org/wiki/Manual:FAQ MediaWiki FAQ]
+* [https://lists.wikimedia.org/mailman/listinfo/mediawiki-announce MediaWiki release mailing list]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Project guide</title>
+    <id>5</id>
+    <revision>
+      <id>29</id>
+      <timestamp></timestamp>
+      <contributor>
+        <ip>192.168.144.1</ip>
+      </contributor>
+      <comment>New page: = Project start guide =  == Create Subversion repository == 1. Login as 'svn' user, password 'subversion'    su - svn  2. Use svnadmin to create new repository:    svnadmin create newproje...</comment>
+      <text xml:space="preserve">= Project start guide =
+
+== Create Subversion repository ==
+1. Login as 'svn' user, password 'subversion'
+
+  su - svn
+
+2. Use svnadmin to create new repository:
+
+  svnadmin create newproject
+
+3. Change access right for repository folder:
+
+  chmod -R g+w newproject
+
+== Add project users ==
+
+== Create Trac workplace ==
+
+== Add project to hudson ==</text>
+    </revision>
+  </page>
+  <page>
+    <title>Configuration guide</title>
+    <id>2</id>
+    <revision>
+      <id>28</id>
+      <timestamp></timestamp>
+      <contributor>
+        <ip>192.168.144.1</ip>
+      </contributor>
+      <comment>/* Trac 0.11.3 */</comment>
+      <text xml:space="preserve">CDS Quickstart consists of the following pre-configured components:
+
+__TOC__
+
+==Ubuntu Linux 8.10 (Server)==
+
+The server does not have GUI and accessible through SSH using following credentials:
+&lt;pre&gt;
+User: tuxdistro
+Password: tuxdistro
+&lt;/pre&gt;
+==Apache2 Web Server==
+
+The server runs on port 80 and configured to handle pages for other servers
+
+==Webmin 1.450==
+
+Webmin is a service, that allows to configure Ubuntu Server via Web interface.
+
+In order to access this service, following line needs to be added to the [[hosts file]]:
+&lt;pre&gt;
+127.0.0.1  webmin
+&lt;/pre&gt;
+
+[http://webmin/ http://webmin/]
+
+==Hudson 1.280==
+
+Hudson is continuous integration server.
+
+[http://localhost/hudson/ http://localhost/hudson/]
+
+Hudson has the [[sample quick start project]] configured and running.
+
+==Trac 0.11.3==
+
+Trac is a web-based software project management and bug/issue tracking system emphasizing ease of use and low ceremony. It provides an integrated Wiki, an interface to version control systems, and a number of convenient ways to stay on top of events and changes within a project. 
+
+Trac is configured for Demo project. In order to use it for your project, you will need to [[setup Trac for your project]].
+
+Trac root is located here:
+[http://localhost/trac/ http://localhost/trac/]
+
+===Trac authentication===
+
+Trac uses the same user names and passwords as Subversion, discussed a bit later in this document.
+
+==MySQL 5.1==
+
+MySQL is an open source database.
+
+&lt;pre&gt;
+User: root
+Password: tuxdistro
+&lt;/pre&gt;
+
+[http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]
+
+==Subversion 1.5.1 (r32289)==
+
+Subversion repository for a [[sample quick start project]] is in /usr/svn/demo
+
+Subversion has its own user:
+
+&lt;pre&gt;
+User: svn
+Password: subversion
+&lt;/pre&gt;
+
+[[Subversion HOWTO]]
+
+[http://localhost/svn/ http://localhost/svn/]
+
+===Repository access===
+Subversion repositories require a valid user to be specified in &lt;pre&gt;/etc/svn-auth-file&lt;/pre&gt; In order to add user to that file, following command needs to be executed: &lt;pre&gt;sudo htpasswd /etc/svn-auth-file &lt;new user name&gt;&lt;/pre&gt;
+
+For example, to add user jdoe: 
+&lt;pre&gt;
+sudo htpasswd /etc/svn-auth-file jdoe
+&lt;/pre&gt;
+
+Please note, that this authentication mode allows read-only access for read operations and will require users to be registered for write operations. There are other [http://svnbook.red-bean.com/en/1.0/ch06s04.html security schemes] available for Subversion, you should implement them yourself, if you need to.
+
+==Maven 2.0.9==
+
+Maven is located in /usr/share/maven2
+
+Maven configuration file, settings.xml is located in /etc/maven2/
+
+Maven is restricted to use only local repository (see Archiva section). It is recommended to keep that restriction, so Maven will not try to connect directly to any of the repositories. 
+
+If it is required to let Maven connect to internet, following lines should be commented from settings.xml:
+&lt;pre&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;archiva.default&lt;/id&gt;
+      &lt;url&gt;http://localhost/archiva/repository/localqs/&lt;/url&gt;
+      &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+    &lt;/mirror&gt;
+&lt;/pre&gt;
+
+==Apache Archiva 1.1.3==
+
+Artifact repository manager.
+
+
+Administrator credentials:
+&lt;pre&gt;
+User: admin
+Password: 4dm1n
+&lt;/pre&gt;
+
+Maven is instructed to use those credentials in order to get files from repository:
+&lt;pre&gt;
+User: quickstart
+Password: password
+&lt;/pre&gt;
+
+Quickstart repository can be reached from:
+[http://localhost/archiva/repository/localqs/ http://localhost/archiva/repository/localqs/]
+
+[http://localhost/archiva/ http://localhost/archiva/]
+
+==Sun JDK 1.6.0_10==
+
+==Tomcat 6.0.18==</text>
+    </revision>
+  </page>
+</mediawiki>

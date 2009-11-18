@@ -1,0 +1,9 @@
+FLUSH PRIVILEGES;
+USE mysql;
+DELETE FROM user WHERE User='wikiuser';
+FLUSH PRIVILEGES;
+CREATE USER 'wikiuser'@'localhost' IDENTIFIED BY 'w1kiuser';
+FLUSH PRIVILEGES;
+DROP DATABASE `wikidb`;
+CREATE DATABASE `wikidb` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+GRANT ALL PRIVILEGES ON wikidb.* to 'wikiuser'@'%' IDENTIFIED BY 'w1kiuser' WITH GRANT OPTION ;

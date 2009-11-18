@@ -1,0 +1,18 @@
+<Location /trac>
+    SetHandler mod_python
+    PythonInterpreter main_interpreter
+    PythonHandler trac.web.modpython_frontend
+    PythonOption TracEnvParentDir /var/lib/trac
+    PythonOption TracUriRoot /trac
+    PythonOption PYTHON_EGG_CACHE /tmp
+</Location>
+
+# use the following for one authorization for all projects 
+# (names containing "-" are not detected):
+<LocationMatch "/trac/[[:alnum:]]+/login">
+    AuthType Basic
+    AuthName "trac"
+    AuthUserFile /etc/svn-auth-file
+    Require valid-user
+</LocationMatch>
+

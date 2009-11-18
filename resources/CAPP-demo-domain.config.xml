@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<maven2-moduleset>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>http://localhost/svn/cappdemo/demo/trunk/demo-domain</remote>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <useUpdate>false</useUpdate>
+    <excludedRegions></excludedRegions>
+    <excludedUsers></excludedUsers>
+    <excludedRevprop></excludedRevprop>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>*/15 * * * 0-5</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <rootModule>
+    <groupId>com.capgemini.demo</groupId>
+    <artifactId>demo-domain</artifactId>
+  </rootModule>
+  <goals>clean install --activate-profiles ci --errors --batch-mode</goals>
+  <aggregatorStyleBuild>true</aggregatorStyleBuild>
+  <incrementalBuild>false</incrementalBuild>
+  <usePrivateRepository>false</usePrivateRepository>
+  <ignoreUpstremChanges>true</ignoreUpstremChanges>
+  <reporters>
+    <hudson.plugins.findbugs.FindBugsReporter>
+      <threshold></threshold>
+      <failureThreshold></failureThreshold>
+      <newFailureThreshold></newFailureThreshold>
+      <newThreshold></newThreshold>
+      <healthy></healthy>
+      <unHealthy></unHealthy>
+      <height></height>
+      <pluginName>[FINDBUGS] </pluginName>
+      <thresholdLimit>low</thresholdLimit>
+    </hudson.plugins.findbugs.FindBugsReporter>
+    <hudson.plugins.checkstyle.CheckStyleReporter>
+      <threshold></threshold>
+      <failureThreshold></failureThreshold>
+      <newFailureThreshold></newFailureThreshold>
+      <newThreshold></newThreshold>
+      <healthy></healthy>
+      <unHealthy></unHealthy>
+      <pluginName>[CHECKSTYLE] </pluginName>
+      <thresholdLimit>low</thresholdLimit>
+    </hudson.plugins.checkstyle.CheckStyleReporter>
+  </reporters>
+  <publishers>
+    <hudson.maven.RedeployPublisher>
+      <id>snapshots</id>
+      <url>http://localhost/artifactory/libs-snapshots-local</url>
+      <uniqueVersion>false</uniqueVersion>
+    </hudson.maven.RedeployPublisher>
+  </publishers>
+  <buildWrappers/>
+</maven2-moduleset>

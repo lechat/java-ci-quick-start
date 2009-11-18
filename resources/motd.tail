@@ -1,0 +1,21 @@
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To access official Ubuntu documentation, please visit:
+http://help.ubuntu.com/
+--------------------------------------------------------------------
+Capgemini UK Custom Software Development QuickStart.
+(c) 2009 Capgemini UK plc.
+
+To access servers, please visit:
+
+http://localhost/svn/
+http://localhost/wiki/
+http://localhost/hudson/
+http://localhost/trac/demo/
+http://localhost/artifactory/
+

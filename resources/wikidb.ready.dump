@@ -1,0 +1,1164 @@
+-- MySQL dump 10.11
+--
+-- Host: localhost    Database: wikidb
+-- ------------------------------------------------------
+-- Server version	5.0.67-0ubuntu6
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `qs_archive`
+--
+
+DROP TABLE IF EXISTS `qs_archive`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_archive` (
+  `ar_namespace` int(11) NOT NULL default '0',
+  `ar_title` varbinary(255) NOT NULL default '',
+  `ar_text` mediumblob NOT NULL,
+  `ar_comment` tinyblob NOT NULL,
+  `ar_user` int(10) unsigned NOT NULL default '0',
+  `ar_user_text` varbinary(255) NOT NULL,
+  `ar_timestamp` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `ar_minor_edit` tinyint(4) NOT NULL default '0',
+  `ar_flags` tinyblob NOT NULL,
+  `ar_rev_id` int(10) unsigned default NULL,
+  `ar_text_id` int(10) unsigned default NULL,
+  `ar_deleted` tinyint(3) unsigned NOT NULL default '0',
+  `ar_len` int(10) unsigned default NULL,
+  `ar_page_id` int(10) unsigned default NULL,
+  `ar_parent_id` int(10) unsigned default NULL,
+  KEY `name_title_timestamp` (`ar_namespace`,`ar_title`,`ar_timestamp`),
+  KEY `usertext_timestamp` (`ar_user_text`,`ar_timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_archive`
+--
+
+LOCK TABLES `qs_archive` WRITE;
+/*!40000 ALTER TABLE `qs_archive` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_archive` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_category`
+--
+
+DROP TABLE IF EXISTS `qs_category`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_category` (
+  `cat_id` int(10) unsigned NOT NULL auto_increment,
+  `cat_title` varbinary(255) NOT NULL,
+  `cat_pages` int(11) NOT NULL default '0',
+  `cat_subcats` int(11) NOT NULL default '0',
+  `cat_files` int(11) NOT NULL default '0',
+  `cat_hidden` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`cat_id`),
+  UNIQUE KEY `cat_title` (`cat_title`),
+  KEY `cat_pages` (`cat_pages`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_category`
+--
+
+LOCK TABLES `qs_category` WRITE;
+/*!40000 ALTER TABLE `qs_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_categorylinks`
+--
+
+DROP TABLE IF EXISTS `qs_categorylinks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_categorylinks` (
+  `cl_from` int(10) unsigned NOT NULL default '0',
+  `cl_to` varbinary(255) NOT NULL default '',
+  `cl_sortkey` varbinary(70) NOT NULL default '',
+  `cl_timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  UNIQUE KEY `cl_from` (`cl_from`,`cl_to`),
+  KEY `cl_sortkey` (`cl_to`,`cl_sortkey`,`cl_from`),
+  KEY `cl_timestamp` (`cl_to`,`cl_timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_categorylinks`
+--
+
+LOCK TABLES `qs_categorylinks` WRITE;
+/*!40000 ALTER TABLE `qs_categorylinks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_categorylinks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_externallinks`
+--
+
+DROP TABLE IF EXISTS `qs_externallinks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_externallinks` (
+  `el_from` int(10) unsigned NOT NULL default '0',
+  `el_to` blob NOT NULL,
+  `el_index` blob NOT NULL,
+  KEY `el_from` (`el_from`,`el_to`(40)),
+  KEY `el_to` (`el_to`(60),`el_from`),
+  KEY `el_index` (`el_index`(60))
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_externallinks`
+--
+
+LOCK TABLES `qs_externallinks` WRITE;
+/*!40000 ALTER TABLE `qs_externallinks` DISABLE KEYS */;
+INSERT INTO `qs_externallinks` VALUES (1,'http://meta.wikimedia.org/wiki/Help:Contents','http://org.wikimedia.meta./wiki/Help:Contents'),(1,'http://www.mediawiki.org/wiki/Manual:Configuration_settings','http://org.mediawiki.www./wiki/Manual:Configuration_settings'),(1,'http://www.mediawiki.org/wiki/Manual:FAQ','http://org.mediawiki.www./wiki/Manual:FAQ'),(1,'https://lists.wikimedia.org/mailman/listinfo/mediawiki-announce','https://org.wikimedia.lists./mailman/listinfo/mediawiki-announce'),(3,'http://webmin/','http://webmin./'),(3,'http://localhost/hudson/','http://localhost./hudson/'),(3,'http://localhost/trac/','http://localhost./trac/'),(3,'http://localhost/phpmyadmin/','http://localhost./phpmyadmin/'),(3,'http://localhost/svn/','http://localhost./svn/'),(3,'http://svnbook.red-bean.com/en/1.0/ch06s04.html','http://com.red-bean.svnbook./en/1.0/ch06s04.html'),(3,'http://localhost/archiva/repository/localqs/','http://localhost./archiva/repository/localqs/'),(3,'http://localhost/archiva/','http://localhost./archiva/');
+/*!40000 ALTER TABLE `qs_externallinks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_filearchive`
+--
+
+DROP TABLE IF EXISTS `qs_filearchive`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_filearchive` (
+  `fa_id` int(11) NOT NULL auto_increment,
+  `fa_name` varbinary(255) NOT NULL default '',
+  `fa_archive_name` varbinary(255) default '',
+  `fa_storage_group` varbinary(16) default NULL,
+  `fa_storage_key` varbinary(64) default '',
+  `fa_deleted_user` int(11) default NULL,
+  `fa_deleted_timestamp` binary(14) default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `fa_deleted_reason` blob,
+  `fa_size` int(10) unsigned default '0',
+  `fa_width` int(11) default '0',
+  `fa_height` int(11) default '0',
+  `fa_metadata` mediumblob,
+  `fa_bits` int(11) default '0',
+  `fa_media_type` enum('UNKNOWN','BITMAP','DRAWING','AUDIO','VIDEO','MULTIMEDIA','OFFICE','TEXT','EXECUTABLE','ARCHIVE') default NULL,
+  `fa_major_mime` enum('unknown','application','audio','image','text','video','message','model','multipart') default 'unknown',
+  `fa_minor_mime` varbinary(32) default 'unknown',
+  `fa_description` tinyblob,
+  `fa_user` int(10) unsigned default '0',
+  `fa_user_text` varbinary(255) default NULL,
+  `fa_timestamp` binary(14) default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `fa_deleted` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`fa_id`),
+  KEY `fa_name` (`fa_name`,`fa_timestamp`),
+  KEY `fa_storage_group` (`fa_storage_group`,`fa_storage_key`),
+  KEY `fa_deleted_timestamp` (`fa_deleted_timestamp`),
+  KEY `fa_user_timestamp` (`fa_user_text`,`fa_timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_filearchive`
+--
+
+LOCK TABLES `qs_filearchive` WRITE;
+/*!40000 ALTER TABLE `qs_filearchive` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_filearchive` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_hitcounter`
+--
+
+DROP TABLE IF EXISTS `qs_hitcounter`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_hitcounter` (
+  `hc_id` int(10) unsigned NOT NULL
+) ENGINE=MEMORY DEFAULT CHARSET=latin1 MAX_ROWS=25000;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_hitcounter`
+--
+
+LOCK TABLES `qs_hitcounter` WRITE;
+/*!40000 ALTER TABLE `qs_hitcounter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_hitcounter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_image`
+--
+
+DROP TABLE IF EXISTS `qs_image`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_image` (
+  `img_name` varbinary(255) NOT NULL default '',
+  `img_size` int(10) unsigned NOT NULL default '0',
+  `img_width` int(11) NOT NULL default '0',
+  `img_height` int(11) NOT NULL default '0',
+  `img_metadata` mediumblob NOT NULL,
+  `img_bits` int(11) NOT NULL default '0',
+  `img_media_type` enum('UNKNOWN','BITMAP','DRAWING','AUDIO','VIDEO','MULTIMEDIA','OFFICE','TEXT','EXECUTABLE','ARCHIVE') default NULL,
+  `img_major_mime` enum('unknown','application','audio','image','text','video','message','model','multipart') NOT NULL default 'unknown',
+  `img_minor_mime` varbinary(32) NOT NULL default 'unknown',
+  `img_description` tinyblob NOT NULL,
+  `img_user` int(10) unsigned NOT NULL default '0',
+  `img_user_text` varbinary(255) NOT NULL,
+  `img_timestamp` varbinary(14) NOT NULL default '',
+  `img_sha1` varbinary(32) NOT NULL default '',
+  PRIMARY KEY  (`img_name`),
+  KEY `img_usertext_timestamp` (`img_user_text`,`img_timestamp`),
+  KEY `img_size` (`img_size`),
+  KEY `img_timestamp` (`img_timestamp`),
+  KEY `img_sha1` (`img_sha1`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_image`
+--
+
+LOCK TABLES `qs_image` WRITE;
+/*!40000 ALTER TABLE `qs_image` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_imagelinks`
+--
+
+DROP TABLE IF EXISTS `qs_imagelinks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_imagelinks` (
+  `il_from` int(10) unsigned NOT NULL default '0',
+  `il_to` varbinary(255) NOT NULL default '',
+  UNIQUE KEY `il_from` (`il_from`,`il_to`),
+  KEY `il_to` (`il_to`,`il_from`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_imagelinks`
+--
+
+LOCK TABLES `qs_imagelinks` WRITE;
+/*!40000 ALTER TABLE `qs_imagelinks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_imagelinks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_interwiki`
+--
+
+DROP TABLE IF EXISTS `qs_interwiki`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_interwiki` (
+  `iw_prefix` varbinary(32) NOT NULL,
+  `iw_url` blob NOT NULL,
+  `iw_local` tinyint(1) NOT NULL,
+  `iw_trans` tinyint(4) NOT NULL default '0',
+  UNIQUE KEY `iw_prefix` (`iw_prefix`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_interwiki`
+--
+
+LOCK TABLES `qs_interwiki` WRITE;
+/*!40000 ALTER TABLE `qs_interwiki` DISABLE KEYS */;
+INSERT INTO `qs_interwiki` VALUES ('acronym','http://www.acronymfinder.com/af-query.asp?String=exact&Acronym=$1',0,0),('advogato','http://www.advogato.org/$1',0,0),('annotationwiki','http://www.seedwiki.com/page.cfm?wikiid=368&doc=$1',0,0),('arxiv','http://www.arxiv.org/abs/$1',0,0),('c2find','http://c2.com/cgi/wiki?FindPage&value=$1',0,0),('cache','http://www.google.com/search?q=cache:$1',0,0),('commons','http://commons.wikimedia.org/wiki/$1',0,0),('corpknowpedia','http://corpknowpedia.org/wiki/index.php/$1',0,0),('dictionary','http://www.dict.org/bin/Dict?Database=*&Form=Dict1&Strategy=*&Query=$1',0,0),('disinfopedia','http://www.disinfopedia.org/wiki.phtml?title=$1',0,0),('docbook','http://wiki.docbook.org/topic/$1',0,0),('doi','http://dx.doi.org/$1',0,0),('drumcorpswiki','http://www.drumcorpswiki.com/index.php/$1',0,0),('dwjwiki','http://www.suberic.net/cgi-bin/dwj/wiki.cgi?$1',0,0),('elibre','http://enciclopedia.us.es/index.php/$1',0,0),('emacswiki','http://www.emacswiki.org/cgi-bin/wiki.pl?$1',0,0),('foldoc','http://foldoc.org/?$1',0,0),('foxwiki','http://fox.wikis.com/wc.dll?Wiki~$1',0,0),('freebsdman','http://www.FreeBSD.org/cgi/man.cgi?apropos=1&query=$1',0,0),('gej','http://www.esperanto.de/cgi-bin/aktivikio/wiki.pl?$1',0,0),('gentoo-wiki','http://gentoo-wiki.com/$1',0,0),('google','http://www.google.com/search?q=$1',0,0),('googlegroups','http://groups.google.com/groups?q=$1',0,0),('hammondwiki','http://www.dairiki.org/HammondWiki/$1',0,0),('hewikisource','http://he.wikisource.org/wiki/$1',1,0),('hrwiki','http://www.hrwiki.org/index.php/$1',0,0),('imdb','http://us.imdb.com/Title?$1',0,0),('jargonfile','http://sunir.org/apps/meta.pl?wiki=JargonFile&redirect=$1',0,0),('jspwiki','http://www.jspwiki.org/wiki/$1',0,0),('keiki','http://kei.ki/en/$1',0,0),('kmwiki','http://kmwiki.wikispaces.com/$1',0,0),('linuxwiki','http://linuxwiki.de/$1',0,0),('lojban','http://www.lojban.org/tiki/tiki-index.php?page=$1',0,0),('lqwiki','http://wiki.linuxquestions.org/wiki/$1',0,0),('lugkr','http://lug-kr.sourceforge.net/cgi-bin/lugwiki.pl?$1',0,0),('mathsongswiki','http://SeedWiki.com/page.cfm?wikiid=237&doc=$1',0,0),('meatball','http://www.usemod.com/cgi-bin/mb.pl?$1',0,0),('mediawikiwiki','http://www.mediawiki.org/wiki/$1',0,0),('mediazilla','http://bugzilla.wikipedia.org/$1',1,0),('memoryalpha','http://www.memory-alpha.org/en/index.php/$1',0,0),('metawiki','http://sunir.org/apps/meta.pl?$1',0,0),('metawikipedia','http://meta.wikimedia.org/wiki/$1',0,0),('moinmoin','http://purl.net/wiki/moin/$1',0,0),('mozillawiki','http://wiki.mozilla.org/index.php/$1',0,0),('oeis','http://www.research.att.com/cgi-bin/access.cgi/as/njas/sequences/eisA.cgi?Anum=$1',0,0),('openfacts','http://openfacts.berlios.de/index.phtml?title=$1',0,0),('openwiki','http://openwiki.com/?$1',0,0),('patwiki','http://gauss.ffii.org/$1',0,0),('pmeg','http://www.bertilow.com/pmeg/$1.php',0,0),('ppr','http://c2.com/cgi/wiki?$1',0,0),('pythoninfo','http://wiki.python.org/moin/$1',0,0),('rfc','http://www.rfc-editor.org/rfc/rfc$1.txt',0,0),('s23wiki','http://is-root.de/wiki/index.php/$1',0,0),('seattlewiki','http://seattle.wikia.com/wiki/$1',0,0),('seattlewireless','http://seattlewireless.net/?$1',0,0),('senseislibrary','http://senseis.xmp.net/?$1',0,0),('slashdot','http://slashdot.org/article.pl?sid=$1',0,0),('sourceforge','http://sourceforge.net/$1',0,0),('squeak','http://wiki.squeak.org/squeak/$1',0,0),('susning','http://www.susning.nu/$1',0,0),('svgwiki','http://wiki.svg.org/$1',0,0),('tavi','http://tavi.sourceforge.net/$1',0,0),('tejo','http://www.tejo.org/vikio/$1',0,0),('theopedia','http://www.theopedia.com/$1',0,0),('tmbw','http://www.tmbw.net/wiki/$1',0,0),('tmnet','http://www.technomanifestos.net/?$1',0,0),('tmwiki','http://www.EasyTopicMaps.com/?page=$1',0,0),('twiki','http://twiki.org/cgi-bin/view/$1',0,0),('uea','http://www.tejo.org/uea/$1',0,0),('unreal','http://wiki.beyondunreal.com/wiki/$1',0,0),('usemod','http://www.usemod.com/cgi-bin/wiki.pl?$1',0,0),('vinismo','http://vinismo.com/en/$1',0,0),('webseitzwiki','http://webseitz.fluxent.com/wiki/$1',0,0),('why','http://clublet.com/c/c/why?$1',0,0),('wiki','http://c2.com/cgi/wiki?$1',0,0),('wikia','http://www.wikia.com/wiki/$1',0,0),('wikibooks','http://en.wikibooks.org/wiki/$1',1,0),('wikicities','http://www.wikicities.com/index.php/$1',0,0),('wikif1','http://www.wikif1.org/$1',0,0),('wikihow','http://www.wikihow.com/$1',0,0),('wikimedia','http://wikimediafoundation.org/wiki/$1',0,0),('wikinews','http://en.wikinews.org/wiki/$1',1,0),('wikinfo','http://www.wikinfo.org/index.php/$1',0,0),('wikipedia','http://en.wikipedia.org/wiki/$1',1,0),('wikiquote','http://en.wikiquote.org/wiki/$1',1,0),('wikisource','http://sources.wikipedia.org/wiki/$1',1,0),('wikispecies','http://species.wikipedia.org/wiki/$1',1,0),('wikitravel','http://wikitravel.org/en/$1',0,0),('wikt','http://en.wiktionary.org/wiki/$1',1,0),('wiktionary','http://en.wiktionary.org/wiki/$1',1,0),('wlug','http://www.wlug.org.nz/$1',0,0),('zwiki','http://zwiki.org/$1',0,0),('zzz wiki','http://wiki.zzz.ee/index.php/$1',0,0);
+/*!40000 ALTER TABLE `qs_interwiki` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_ipblocks`
+--
+
+DROP TABLE IF EXISTS `qs_ipblocks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_ipblocks` (
+  `ipb_id` int(11) NOT NULL auto_increment,
+  `ipb_address` tinyblob NOT NULL,
+  `ipb_user` int(10) unsigned NOT NULL default '0',
+  `ipb_by` int(10) unsigned NOT NULL default '0',
+  `ipb_by_text` varbinary(255) NOT NULL default '',
+  `ipb_reason` tinyblob NOT NULL,
+  `ipb_timestamp` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `ipb_auto` tinyint(1) NOT NULL default '0',
+  `ipb_anon_only` tinyint(1) NOT NULL default '0',
+  `ipb_create_account` tinyint(1) NOT NULL default '1',
+  `ipb_enable_autoblock` tinyint(1) NOT NULL default '1',
+  `ipb_expiry` varbinary(14) NOT NULL default '',
+  `ipb_range_start` tinyblob NOT NULL,
+  `ipb_range_end` tinyblob NOT NULL,
+  `ipb_deleted` tinyint(1) NOT NULL default '0',
+  `ipb_block_email` tinyint(1) NOT NULL default '0',
+  `ipb_allow_usertalk` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`ipb_id`),
+  UNIQUE KEY `ipb_address` (`ipb_address`(255),`ipb_user`,`ipb_auto`,`ipb_anon_only`),
+  KEY `ipb_user` (`ipb_user`),
+  KEY `ipb_range` (`ipb_range_start`(8),`ipb_range_end`(8)),
+  KEY `ipb_timestamp` (`ipb_timestamp`),
+  KEY `ipb_expiry` (`ipb_expiry`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_ipblocks`
+--
+
+LOCK TABLES `qs_ipblocks` WRITE;
+/*!40000 ALTER TABLE `qs_ipblocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_ipblocks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_job`
+--
+
+DROP TABLE IF EXISTS `qs_job`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_job` (
+  `job_id` int(10) unsigned NOT NULL auto_increment,
+  `job_cmd` varbinary(60) NOT NULL default '',
+  `job_namespace` int(11) NOT NULL,
+  `job_title` varbinary(255) NOT NULL,
+  `job_params` blob NOT NULL,
+  PRIMARY KEY  (`job_id`),
+  KEY `job_cmd` (`job_cmd`,`job_namespace`,`job_title`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_job`
+--
+
+LOCK TABLES `qs_job` WRITE;
+/*!40000 ALTER TABLE `qs_job` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_job` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_langlinks`
+--
+
+DROP TABLE IF EXISTS `qs_langlinks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_langlinks` (
+  `ll_from` int(10) unsigned NOT NULL default '0',
+  `ll_lang` varbinary(20) NOT NULL default '',
+  `ll_title` varbinary(255) NOT NULL default '',
+  UNIQUE KEY `ll_from` (`ll_from`,`ll_lang`),
+  KEY `ll_lang` (`ll_lang`,`ll_title`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_langlinks`
+--
+
+LOCK TABLES `qs_langlinks` WRITE;
+/*!40000 ALTER TABLE `qs_langlinks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_langlinks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_logging`
+--
+
+DROP TABLE IF EXISTS `qs_logging`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_logging` (
+  `log_id` int(10) unsigned NOT NULL auto_increment,
+  `log_type` varbinary(10) NOT NULL default '',
+  `log_action` varbinary(10) NOT NULL default '',
+  `log_timestamp` binary(14) NOT NULL default '19700101000000',
+  `log_user` int(10) unsigned NOT NULL default '0',
+  `log_namespace` int(11) NOT NULL default '0',
+  `log_title` varbinary(255) NOT NULL default '',
+  `log_comment` varbinary(255) NOT NULL default '',
+  `log_params` blob NOT NULL,
+  `log_deleted` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`log_id`),
+  KEY `type_time` (`log_type`,`log_timestamp`),
+  KEY `user_time` (`log_user`,`log_timestamp`),
+  KEY `page_time` (`log_namespace`,`log_title`,`log_timestamp`),
+  KEY `times` (`log_timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_logging`
+--
+
+LOCK TABLES `qs_logging` WRITE;
+/*!40000 ALTER TABLE `qs_logging` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_logging` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_math`
+--
+
+DROP TABLE IF EXISTS `qs_math`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_math` (
+  `math_inputhash` varbinary(16) NOT NULL,
+  `math_outputhash` varbinary(16) NOT NULL,
+  `math_html_conservativeness` tinyint(4) NOT NULL,
+  `math_html` blob,
+  `math_mathml` blob,
+  UNIQUE KEY `math_inputhash` (`math_inputhash`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_math`
+--
+
+LOCK TABLES `qs_math` WRITE;
+/*!40000 ALTER TABLE `qs_math` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_math` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_objectcache`
+--
+
+DROP TABLE IF EXISTS `qs_objectcache`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_objectcache` (
+  `keyname` varbinary(255) NOT NULL default '',
+  `value` mediumblob,
+  `exptime` datetime default NULL,
+  PRIMARY KEY  (`keyname`),
+  KEY `exptime` (`exptime`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_objectcache`
+--
+
+LOCK TABLES `qs_objectcache` WRITE;
+/*!40000 ALTER TABLE `qs_objectcache` DISABLE KEYS */;
+INSERT INTO `qs_objectcache` VALUES ('wikidb-qs_::atom:limit:50:minor:','½YmoÛ8şÜşŠh»·±d;/›8VŠ Å^{×^»MŠ-Ñ67©’”ß¯¿R’å$–“¦{é‡ÚÒ3œç™áÌØ{GÃÎèõM–Âœk#”Œ:ı ×y}òÜ=í\Z»L¹™qnÁ.su,¿±alLfšO¢ÎÌÚ|†ı£AĞ?8úü·.ÄµÍµ&ŒU–)N8O\\øº´ïö§€:¤©wY,Áb7Pz\Zz½ığÔª¬C2Ã”ÉiÔá²sòüÙ³‘HNÚô\n™ğ› Ÿå¯­°)Îr–¿ğ˜Kûf†{qóAÈk¼`Y~L–Du¹o–é)·ÑG&äÕg6å£Õ‘V·ÙÉ…ˆ¯ÏPÈt¡Ü4O™ÅóX/¾ÊÓr åş+\\py9\nı´YŠêiUÔ1<tJï²<OEÌ,’A¿âÙâéŸ{âNxËD–Z®%°ÓdÁÌ>Ò¸°Å¬Rg‘\'äÇ„ÿ¨ÛÛíÎûûÃŞoÃ½½ÿŒÂê-Išbì½ù¥t}ì·…õ›rÉ5TŸ|ä‰`ßĞ èı½ 7\nWï?6B‹ôòGèõFÉ‰˜ÚÁv5-DÂ[1™D{î£J‘D¹æó[lZ[níı,ùIüˆÉšÍàGëàx|²Œéei­3ôäEjóS{LLÎ$Ä)3&ò1Â\n«(Y şIkC/è÷ƒ]ZÒªj‡Ğíõ|m×1}ø7_@N±GBãuqú”ˆ9}|óö\\8Î±’Fk@MÀÎ8LTšª…S@/tãÒeÄ4•åJ¢™fèTjkCê/WWçŸŞ\\]mˆ¢¯ãBÚ0\0Š@ÄzğêŒkLÄ¿DÑæuçhšqb(L=RY˜±9‡|}L&Àâ˜#Æ)ÇchULgpvö\nCGY*Æ£à0oƒà\'ŸjOŠÊ³Õû¯¨}¶¸IĞ[Z­½ûŒp.”N6½¯ö7mE§9‹g|\0ßø¼;è\r]HÄNB®ÌÃóE5LÍ˜!ô\nQÃ \'4(ÄY—ëMThL†	½ìí÷ÚÌ)å„æ¶1ßA˜F~7dEm”ğ§„¹`îĞBb¨OXÌƒÍzŞK@/ã\"ÜÏãZPk­s…3æ¾S>æÀ’Ä»ƒH~q1SÄù‰HùååãˆĞüôğ_`áÎı8¨×¾\\T%€Û(„õ¯—mØ¼+£›Áa+6¥z	°tª0ÎÙÓ2ız´x½22U1KÉoáÌíY›{çE‹á¥93fJ :	Ùù2ø””kõ\'íåe“ÈÄkäºDp[l¢Fêl s„EgwÇÌ \n£&vÁ¡¥1‰AC©Ù©ÓPS`†ÁÕ×D3³4–gÀ³O$şK8îEÉ´Àÿhb®9–ƒË\0Ş»ãÍñêAİ²µÓ%½S=s‘@l-TVi©Ğìøœ²ÈÆ¨æ\\\n²uÁ–õèÍ%¥«r’àsJŞ>A”ÜB`üHÜ§<q\0Û=ÖÀ„’É[<Øjy3BÉÂ:¡¥*t%´CßPsšºø$Id·ENÅmùËË¼İ\n­ğ2@Ëˆ‡äIÌn|¸…Â„à=v[ãÎoí]#¾j¶2\r}á	tçôMƒÄO¼¼>ğ›³b\\b¾x•Ä…!j2£+©äÓÈŸõÄÍÖpø¸<ûãìı6½pŒT9Çœ€şGşaiÃ(4Z4<ìÚ$„~î¹^,ú²%KšIõŞ—­P¯ À4‹.„Wzw08<j-T\Z‹4Ï•Xi/©Ù¶l\'(1CXš¹Œ¬é¡d*¨‚[HG­–úìap¡ö\rh™ZëSàºhÿîÓ·óO—-8Ü—œsUzÚ¹_VxøêávÜŞ‡p}.†÷ƒ9KEâã×—†š»‰ÀEèîñnÈmL¦u)ct©Ş¸ÏWky+•Zƒ+¢hU³¶¡vòF³¼á7<.0ù\rï3Â	–Öå™îšT¯‘ØBÔÉ©òQàşLç7æ;k§ùëö!<Š[í¦=Ÿ@ÄÏ©»¬±—¨êU—X×“;d*áU!«9KºJ¦ƒ\\`ÓCÊ›¾ ò9İİooèüPšO1İñêú\\haycq\0çt}•!¾N¯ø\'+uàÊî˜3 \rB.Ã~ĞãYïÀôöj8± ‹Üu	;\n¼c.Í™HµF¤²yÃĞUlfªH‘¿™«uPmæ®`\ZÒì€˜8±ò²n¿m°#“0Àêø¨õ¾qb»N{3<w˜ÑëÁ¶åñÚÁÇ–XâNM@³½[û{üÎá,Óï$—Ó-*eê.İ4û+Ã9œêx&æÔûÄdÌ/®Ìs›øÎ¾ì<®9Ï=ÍªİFWëk\"¬e,M\\Ë$©MC±Mİ3&—U§ŞLQm…Ûû	•a¢NcÎ–”[¨ıè´àCWyJno7R¦âò·œU}µÊÖ<ş¸>\nğ¯’É„ÖJo[	Š¤bŞçAÂ\'¬Hmø+‰–m\nVRwî‘rãp²ùİ„µ’Æú-şTŸ&•èßëõ·ßltLØâ™ÇåºjÄP“µli‘NµØ†Ø&İ}GÔÖ-®oAEUw4o|êìÅUlê’½$ë?¥$©ã^H´¶hÆ½EVğ¦í”MêËzÊııl|8¬\\õ#\'ü^å6³êpÒÆè¯kŒ•¿»œˆ\">´·uP-qr·8k~TéWí³YÃ–Š^Â?ßş¹ô®ú­ƒìôT†×Ğ°çĞ‹†å•æínÒëÖT0(}2¢ªé¤EïíıQèÂRäÙ(,\'îO™½ö-ÃíönûÔ½\\õÿ›·?ĞÌ¿`Ò^Â‡AulÏyg>…(‚7Hw,¾îïØğ}?€jJóãòßv©7ª>»Ân§Ê†ĞªMªeñÏĞ¥æ\n°Dyúì²š»í½5T‚7²ˆ[VI­D\\ÓÁjÂÿã?lpQ[dlsİúÀ´áÆ—x–—·İörå®—›µ®Ü·YæÁnmU³Áİ±İ¼j7(­ú-¦3[v)@š´¶ç\0ñÛ\rè~é¯‹iF0N±ÅªF–¾ÕhÏkzn2…\\ç)M·,jj¡_ü ÷/H‹îGó“Îñÿ\0','2038-01-19 03:14:07'),('wikidb-qs_::atom:timestamp','+¶24±R220°4062345071Q²\0','2009-03-27 15:07:44'),('wikidb-qs_::rss:limit:50:minor:','ÕY_sÛ8n?&7ÓvïbÉrş4qâtºéÜ¶wÍµÛ¤Ó‡L&CK´ÅDª$eÇ÷é %YNb9ÙìË%‘D\0@\01Ã·o÷ö‡[Çïnóf\\¡äh+\nú[ïN^º¯=c7)çì¢à£-Ëom³©æ“ÑVjm1ÃèpDûA4À¿;Q87\"47Bš0Vy®d8á<	pã»èpÏñ×Æ,…P( @i†IÜp-JJOÃ$yÆs.­	£ \n·N^¾8S&%ÏğñÅ±6ã\'¿—\"¾9·L[€œâú”Ğ<c–\'`¼úY*{tÆ„„¯lÊı+\\ryuzÄ,òæ¤ë`B&ü6(Ò\"</x,X6üÆcT®’ø÷óä8t|ˆaÂM¬Eañ¨\'ß*mbO{¶tü^¢r\'\\\"‹ú…V¦\\rÍ¬Ò\'g<ìªhİ .×<c-E–|@Y\'i¹\rƒ}8c\Zış!D{ÃşÛáî.üvvA2ÚÄ´]XÓCm×S%\'bZ\"T¦¥HxË^O1Ø;·k´ÂğÚ1|Åòâ(“Éh×=ª,É¨Ğ|¶4äª%_eö¨x5µGô`\n&!Æ£˜‘÷*+­\"è¡[ü¢¼Ğ,†~EÁm\niWÍ!t¼^®pÓÃø\nBWÉé)3z<ıp€Æ0VÒc\r¨	Ø”ÃDe™š9<S/®@@Py¡$A{èDjEš—ëë‹/§××ë	F£ïãRÚ|å- ıûğæœkŒ°_F£õû.P5ãÈ Q,RYHÙŒÃoß?“	°8æÆˆqÆñZ•ÓÎÏ?Biè(ËCÅx<ÆÂİc3É¦Ú»¸¶l½ş¥Á–·	ZK«•µ¯èÎ¹ÒÉºõšw¸ùhô¾`qÊğƒÁ›ã‘ÖĞ¥DßI(:ó ïlÑò\Z&à­BĞ0h	\r\nı¬«ı¦ËU¨L)(\nv÷ú]êTtÂ\0slEÌ·ÑÌ#»Ò¢Ñ	*\0øSÂL0wh!-×ó`½œOĞÊ¸	ùy£”ÚÈ\\úC‘ƒÄ\\î„9°$ñæ _^¦Š0?¿ºz\Z¢ÁÛ ¿ÀÜûi®^y¹¬’‘gÂêëU—o>–‰Qä›ÁA§o*:´zÀbĞ©Ò8cO«4éqĞaõZÉLÅ,#»…©ãÙ¨{o¡CñJ”™Ê„èüI	|J*´úƒÇöêª\rdÂ5b]¢s;tZ©³3‚ˆÌİ3ƒ\"ŒšØ9C„V\n@Î$\r¥f\'~\\NCaL‰wßÌÌÂà</ğDâ¿ô‰#/J¦%ş¡]Hˆ¹æX\\,øä7Ã‹eËÆ(®Éíú›‹BkUy8çi•UÍ¶Ïy Ë|Œñ€â`Æ¥ ]çláPÖ\\Pj°ª \n>£äíDUrÌÆD>Õ‰Øl±–O(™|Àƒ-··#” ¬#Z¨R×DÛô†’³ÌÅ\'Q\"\n¸-p\"îÒ_]uøÛíĞ\n/ÔŒpH–ÄìÆ‡ L|\0ÀîsgÜy€á­Ò5»\ZmD\ZÚÂáÎéMƒÄ\'ï¢º>ğÍÀy9®|¾\rx•Ä¥!h2£)©\"ÓˆŸõ—„ÍÎp8[œÿşö‚¨KEO$\"UÁ1\' ı	³ŒB£CÂã®MòĞ_{cnp/–pù‚%í¤úàb§«—®À4‹&„7zg088ì,TZ›4/”Xë.¨Ù¦l\'(1CX\Zš™Ä‚;W’CÉTP7—ZõÙãÜ…Ò×xË4RŸã®Ë–ò¿ü¸ørÕá‡ûÎ%ãÜ÷*}íÜoKøêánÜ>ä;á:3tŞf,‰__Vj¬&C]÷€uCncR­G£GõÆC¶ZÉ›X©4\\E»Úµ\rµ”7Úå\r¿åq‰Éoø¦L°´.Ï$p_¥fÄ¢IN#ŸäÜ\"Òù­ƒùöÊişÀº}OBãF½‰ç3€ø5s—5öu½êëjr‡\\%¼.d5gIOÉ¬FlúHyÓT>§»û­Æ\r¿v”æSLw¼¾>ç\Z›ØÖæ\0.èú*C|^ãO>Vê&À½1g2@„\\†QĞã´¿oú»Ajs,	Èu;\n¼c®€Í˜ÈµF$²}ÃĞUlRUfˆ_r™«uPlî®`Ã³É6ˆ‰#«.ëîÛ;2	¬;ïGÖº±›´—â¹Ãœ–›¶Ç+Í¾,#°Äš€&Ewøz<çğšiw’ˆ«y•2Îë.İ´ûÃ9¼×q*fÔûÄ¤Ì/®ÌsL|g_u7œf5wç£À‹õ5Ö2û–IRš †b›¹oL.êN½¢º\n·O*ÃD“Æœ.·ĞØÑIÁ®ò”ÜŞm¤LÄo5« øj•¯Xüi}àOM“­•^K¶$IMÄ¼Íƒ„OX™Ù&ğ—lJÕT÷î‘Šq¸t²_üiÂFHk‡ª/“šôïÍş»+k\rvXæi¹®14`‚\r-Ò{m¶!¶\rwßuu‹«,¨È¢ê&~Ï½¸ŠmM]²›äÑsJ’&î…DmËvÜ[DoëNÙ¤¹¬§ÜßÏÆ‡ÃÒTæ„?›±ÜšcÖÂ3NÚ\Zıµü\Zcåï.\'‚ˆíMTGœÜ/Î:ˆŸTúÕ|ÖKØPÑKø×‡#ö÷ƒşuÔ98ÁNOåx}À>\r{<iX\rQïÃ_åxı{88ôSìšÌM‰ã!âÊMÃ›qôîn!÷å\nVI×<rÚÁ²›á³ëã°a„LÃz|~oşµšüôŠÕİÙùÎSgçõp{#¨Õó(vœñ+ŒFpJ6ãğp†ëQ\0ŸÕ”&Æ§Ø¿íQ·S?»Rm»‰³Ñ²ñihñÇ”Ğ£v	°èbzvyÊİß^*ª[yÁm«©–$®\r‚`9³ÿó#ş5&êÂú&Ó­@[f|gy}×l¯—æz½^êÒ|ëimÖN1kÌÛõ»v‚êsu¥¯Å4µU½ßêë³¤³áˆSl  ÷\r¦ÿ˜?J2:ã=6MõÒ7İ™ªö›5¡nŠŒæ‡6µ¥Ğÿ	ühöÿ.Ñ­¤˜‡S~­ÿ	{jcN¶ş','2038-01-19 03:14:07'),('wikidb-qs_::rss:timestamp','+¶24±R220°4062345071Q²\0','2009-03-27 15:07:44'),('wikidb-qs_:messages:en','K´2´ª.¶2·R\ns\r\nöô÷S²Î´2´®\0','2009-03-27 15:06:30'),('wikidb-qs_:pcache:idhash:1-0!1!0!!en!2','­VmSÛFÎgÿŠó}h›¶^lœ…:-¡™œ–ç,-òéN½;Å¸ÿ={²äÊ.!¤”ür»~öÙ½}vuÁ‚Ñ)×ôEeËÊR†ìŞ°=F‹+¸³tbXp01\Z•q4¾Ä×\'ª\0b9æe…‚_¾%+‘Ü’KËµíGŞ<ÆüE/òJ|©ò8ÊEL\"N\Zn¨··Â2…»a¹(½c%oDVin…’³¬)Pb…ÍáˆnÙÈÚ?ryÜÅÃ8OÇšjõ\'$v\'JsÚâo}}&òk¨ŸÁØY©ybEæ;^”÷YÉ#H…­¿kHs!oJ’œsD%,7T\0Ù\0JI~”Ê¸Æ¾¦ñ¶W‡¢‡Õî!GÉ;UË™U³ÊÀŒËt–4uƒÙ5r§D¤_s‰t´ãÈ”\\¶|]*ê´hüûW*rÎ…œM1‹G‹ÑÀ¸b48AiAz®İAzdC¬é9GñÈsñzº<‹å`ÜU/õi(Ò\0D&ûHÏ.¬-™ç`ùĞ¥Y`d>T:[\'}\nyÉ°--Hk6÷Š:-yN¬ST›à·AiÈ±AÔÊsµ¤ñ¯¨Øï\ry÷Tg6–Ëå°Æv°ÿàŸsYñœm‹Î€µBfÏ¤şßw2ÙqëFrlğ%öËOÿ,j˜ÊçÎ»î´>EÒ ¼KÄì\\pÁE^pYÛ„¼QŞ&ş€K©*™À3¸¿ı‹)¡8jÃ¡àMì^D=XzQ0 ½°œNÑ¡@¥j(•¶½)¾k…³È(“*ÔW%-##/ğë¿ŞT;€»Ò‰OÈ$¯ĞÉˆ¿ßıÃ7Á^Hæ+¦wE™s‹:ÕYU ¾àwrW‚4â²^eäs¬Û©	î»à½Á e~É?Şú\'<Y\0Y\n» ·°\"®Té|ğ—™±²61‘.¸Y°`à÷ƒ¾ßïƒì‡õô°Xwcq‚‘Ğ÷ıQ¸ìù~H\\°zyq“¾ç2«pô½Çyoè„3Ÿİ? -@Û1&˜)- kxã¨}œ™æ\"OÏy&:™3ß!ún7»6h4ĞÖpìø^!«6ø6/wz€n¿6nlOêU÷‡c÷yß‘mIì^`DÎFî‰ 8dô±\ríÂ0:ªßñ1a{±®aËe{+Ò‰ƒxhSjn»[‡°s~–v,®@g–´ëíJ}ÒÈe“ÅØ‘£é›æ-R\\mÙ‹†]3öŸ	ã¦Mó›ı{±Êk¨¶ÑP­—Í²îvÒõç9èÕÖé)îË3Åîe¬ŸO•êö1©¸æZ®Sî6w{›¤m·z>ÄŞ{Õ}}Uœ¹Gˆ©ÊE²ê´ù¿Sa°CVµ&vTÒ¨ó1ì‡‡tòğ','2009-03-27 15:08:02'),('wikidb-qs_:pcache:idhash:2-0!1!0!!en!2','½XÛnã6İgÅXš]´¶.¾l#_Š\"š\0éÆhÜö¡(Fb,n$Q%);nï–ÙV¼¹\0	Ø\"gÎç©\\ú®ç[\"$—¹ÊreùçßK¿ç[É”Ş)k ıÓëûÖP‘ë˜G–âAL¤,¾Ë<IˆX¬*š*i‡Jào8†lQ:)¦bŠS‘7.\r‡6>m4\Z7†yŒbVé‚Æ-}D‚ŞŒ¬ï&‚¥šIE„šÍsjH™‘´â—æÉ5ÖØÚzf»J¯m\\`ÁƒU8mr€W%t\"(Qtv•_/¨Œ§3A3.™âbu€YûÜÖ°ğ°’C;fÏ ùKÎ²\"s9î¶<ÄÌ;Ì± Àƒõr:EÎ¦‚³%·YL‚CÛØî<+Y\Z6xoË’â³(%OÑê>?SŠÃ\ZoŸ–mêlë»V­%dÙ!…@°QVÅ\0ˆn%²µÆÀnàã’¥!_¶eÄ—SLù|ÓOp\"0zp¥ÇÑF`ikPÎœaİ—3‘ÖÓ\0¶@>~\ZÀ o\réHI‚<ê´hÄ^/R½âÈİN\'\r™’hÊt¢ÿŞl…½d·ÌÆÑ»ve?›Ö1*a\rà÷$ÉÄx4Šy. F®kë§ ö¡FñÖX{krÿÔîf²lE”„1KÑ´\06;Š‹{LÎÁ¾`²ôÎaÒå½Kº¼\'Òu¨	½,o‡*	ô0\n.øœ¥@$ÉEzdúÌ!0Ê;ÄÁ\rÎª%Ó^‚ñ ‚ ƒÃgåµáIõ 	„Dk.)]VHø[8¥õ£i¡ã\nr§\r\'IçHP)A°y¤à†‹êÚnxR±…D	¡õ;ÌXÖA—´ß´MÙÔõòw¬•Îµ²w,¼¬@öÜwªbGV;GGUO{§Ê;&§{XHÛÔ«´\rñD’ê²½ê©qï˜¤Ş3*hs\\¾¾Š6ÛIj›­4¾Ğåd1K–«P	~\n®¥ŒN9vö€ç©ò¡o»ùiL¸T-z‡h!°4ˆs4’ì?êƒc{Îñg·çÁõJQÙ˜Òw7Œˆyà]÷	»Ó»Œ¦’-(v7}‡›<5ù(ƒ;:x£Õ*™_‘ÕÁKû€…%SÜÒè½	¯[ÿÊ™Ÿ™)Ÿ…‘‘ïµœ¦ÛtšMš6=ĞP,¡x%xsìt¼¾Ûsút0}ów»ø\Zp-.\'szÁÒ[i\rˆïø÷8çâÜ	.pÎ£Õ‰Ïzï÷„¥ò2#sXƒkßÑˆ~±Ğ›_¾]à€UNœh¾SdUßæ¥GB³?×_?â{ŠÛî·»ú{_“İ!iÂ;Q÷*ãçaeF“?Op¹Uk†Ó;EEJâº4`-]2©®óÿ•Ä1Å£²:z†Õz®h²KgıvÆyş\'ş\"\"eé|g´hF{ş=Ã\0Äïêw7LQy½µÌw×i*1¦Lâ¢ŒhôÖİŒÖI-®»×YËÛåíÄòĞåàµb7hGoñ:¬÷ú°º*÷O¨ÚX‰ÕyÃİÍw\Z~m¼‰×}[¼úŞYÅòPV.îzF…Ú°‡.ªÿøœë^?á1VÍî†LâBWFà;’/ZM²½cdô?','2009-03-27 15:06:30'),('wikidb-qs_:pcache:idhash:3-0!1!0!!en!2','ÕkoÛ8r?çW°> h±dÉy8ÎãPt÷6¹ën³—ôúáp0h‰¶ÙJ¢*Rv¼EÿûÍ’MË’\'@€+ĞM#g†ó!÷ãĞó‡[šI–}ÌUš«ÎĞ÷‡ßåğxØ‰ïÙƒêœË¡×;;;éÕûŸïÈ9¾JE3E‘H.•$bBÔŒ‘‰ˆ\"±àÉ”¤ëÂê„OóŒ…\0§\"a‰’Ãƒ7½:¸Pt1ÂÃËA‡•²ø·Ìã˜fËËÎ{‘(ÜÓ¹ºPü\r¯.B>/7)®\"K3ÿª¼pá—€€BÁ\"n¡ØœE]öP2ËØä²ó—Oã<QùèOò‡ÑÀñz#ÇÜ±lÎ2Ç?H™ÒÄB‘äñ˜e+ïÂÅ•+RP(³+ƒ–h´Ñ’7éÛbß…KáoÄÁâ»”3æ>³ñÈ ifËog«@E\01¨ögöÆ<yÎÑq¯™‘~;#	ÑHögá:¥@üAGí,$D#ÙŸ…ûŒ£ãyN¿™ƒãv18,š\r×ßb€æàu‰âU\\$-Œ8;ìU³²‰m[&®fìqòùmy÷Ç‡Ğmfê¤%¬9ßC9wùL[rm#€}:ëûşà¬Õ§OÛZc%\Z+ycp¾İ_yÿb©\\‰l9¢AÀ¤laj—êÖ¸ˆÁõLÅÑ9KF¾ÓsZ$5Ø¡:ÄA4§†»Ñ»,˜ñ9¶ºØÙc)ì)ö”Œşñó?—§7òZb×ÛeC	L¤Äô„À#bğÏlw¼A#»^£!M£Å`Æu1õº:]µ ã©\"j™2@˜Ü/tNÍ×ÎáòÒ(œ‰Å½îÅt\Z±·ä;™ÓŒ\0ù;üÉ%é Lç¼\\¹æ!+WfğoXÙ@òæí9ùA€WM\rØK¯.Æq¯ŠŠ‚’„ÆÀÖ”®Ë‡iEµ„-<r%Y`BíV*qü+wáÔìÁIgéßt]rù¾(~t,Ms8Ğk\Z§çTï¿D\\ú÷á¥×!fcçX\"Åç!i®$:Wˆ9ıo­®ãEwÆhñ„=ª ã¢LïÁ_¤^\"¡`’$B‘84ùõÓ\r¡IXDå›še\"ŸÎÈİİ5É%Ö}ë\n0€º³	V5…WŸ\0ù¨ü!„Ê1·ÀìBd¡ı\rÀt¥ÒšH«±¶4zqÕù\rªÛ®¶öRYK±¶­ª,O \nOH* ,ô´¢¬ú[	Ğa‚ÊR:¥NDFdû¬Ø/+>´QäiQWÊ¾r¿AÈv%¹—xkKĞB°Å\Z—„jñ€‚±CÀ¤hŞå¹’né¢FGdÎ©V‡–$›Ğ€9Z¶€õ&!`çƒ]áD€h¬(¬Y$	c¡&5f„†¡Q#¶Y;D{- %MxT/Q°@ÿ#N!—„-VÒÕ›	n&oĞVÖA€=€sBÔ™­ PÒ¾íù§P ¥²Ğ\"\\yrºNa3¥Ò¡ë\Z\0wÅD~–%4\"“Œ±;UàŒEÀ¯0’^6–M¶aÈ­‚6äJóğâ†|Ô`Èv?²—!×62…!k`d`®\n‚¿È¥¶Ì©á·pÿ•‰V•‰€F¨pw¦1=R]5Ûê·¸Rášù•±ú;rÄFßp:1Òã‰Qš‰/ Ş\'xAF42bf²&¯;ğHv,ÆĞá:?w*Öjw•ÚX7ÛÌ·Õã[µ:×½Lµ®ã-s.é€ÎÜS	’’b¢\"l)û˜& üÊ\n-Åq>u¹”9\"°û+N¹”ŠÅ„Å)˜\rÿ?1À…ª~à.°?°ŒÅ\"Y:äFëi’\0ÚÉÊ7€úgàaùMGrŒ¿eˆş”‰¨ (MiDLıä\0\0º ¼.èRÇq0‹%&i%R„€â>QÒ¤jÈÎ˜—2BxŠ;¤t†R>–!aÿ±¶3t†@K‘g%Ğ!şt¢Hç„ÜåXLåéH[\" !²çxb3Te­Ñµš· İ9\"Êì9adA-BÃ†Íq\r-gï¨VlÚÓ4XMRª›İ¬İ}k¨£İ¾ÿ‚nÒæöUööuÿ†)pÀtMÈ‡ Êğ·LÎ¸JZôğ›$ë™Ì!Ş!È%Æ\rJÆÀvúÏÀyM‘Š ÇÀQ\r¹ëA•Ö€=·zñp{Ú ÷Õ(l/ioĞŠPk¸w\"eP€GAt)tù,ív\r½ªµSk+@ ñ’†¯ö\Z¶îr7¸ÆéÚ‡‚Zù»æ†/nƒƒhEîe »š…ÁX€ÙzÚˆ±˜şWe‹aâæ2så<qCH¦e2±ÎŒ(ÇK®E¢ƒQÍ8v[î!W{ëü£APkÛ»şøùşãSÄ³fY£hJÎ®¹›½´¯ûš=»ü¡jv{H®´nvşâò¬Á1·†ñ{9dó(³crPmÆÀ¼¡H¦dN#š|i¦2eŸpH‰`æÚ^]¦xÓp×4ñø}£t¤á\Z‹z œ=Dc.¶\'ì9T\\CCHæ¡ 3¥³uH¶É’×‘:ë]§÷×Su¾v—¿CtaÚ}7xúö<$¶î$…[,O¼tK\0.QNut…°Y˜X„¬÷d ¢®H¢R/:öáGÌŸÆhLq¢ëêR!Èn)ŒMÁùXY¶/2®˜µÙ!÷X¨lvÌ\\®êˆp¢±_ÀĞ3š8 —%®çôÜ`Ö;‘½#g¦âhÛEõÀ¿â¢ÇVq^°ôx_Ì “:ŒÒ9å‘¾ÏÇ³Ù5ö\Zr&ò,U©[78_¬«xÉ¢É!^\Z XÑlÕgÖ}”©Ğ6.¨^~Nßk*ÒÖ—^û•i5—ee¡¦—¬ff•¬f`(nŒË~¹\rp`§ğ[èŸx­tâ¨Š\rÅàq7q´z(ñx L—ˆı¤v¸íBàdë+¶Boug­‘`°`I1¾üÊXj|®Ä®íDŠB~¦1…d¥\0±™²&˜ßCp¨@EúM–åƒ;®{å›	v¾|\Z5åˆ)²’‘Æ	ukŸ0U½ÊÒjÁu\rÿ(…I&â\rinTş`P‹y–‰£™şd>ò?P#$\'dšG\n\\³bæY„_¶Òd±Ù]KŞ,~“®FTì³0N>Nğó_5ŒıeÅ°kq\\óR¹µî^¶îi_Ş!›nÎêî~ŸpÓpy\\¸è»Lñ	°fûƒ™RYCUsKù;ìš(@í¸Ó]ŒUQ…±g“+å	 ÌmU`,ÌF~¾JíSf²¹4Æ¼æº†‰o«‡^\'eûm1c=³¤€TuâC!\Zßi›Ã´X÷¾Ug+ª]ÅhËæÇÕÉ%‚§rıxk›ÜÊK…¢¯İz¿ğònÚtKZ}±gÛğB»çjŞ¶ñfÂLÚ*Ï(^^Mš/3ö¯Õ¾é@I\\¼êvÉÁïlq{ù-æÆSÑ±ág&°¦…˜”`Éˆ<Qq\\¯§ÿÜ‚ÑuÙCŠ.O‚((Éÿ„*¼çú½³SïØ\'ã¥bòàA‘µÔ±S=mk€ûå!e‰äs¼Æ§§d’\'úø%õ?èvKÖï Şé‚¥€tdÆi9TK‚\Z	Çİor4LõÒ‡ĞµÏ†ınï•÷ª÷êK^ùºBWªVš ~¯wÖëû\'Şqï¤ß#HL?v=\Zvâ4™æÄ?@·-;çtØ~ÿk¬½‡NuÅa-œâ‚H…€ü1\n£StÎÇÃ~>‹oiQ×åƒZøĞ)Ş#¿÷ÀUI|“/ü:\0°›’\Z=vĞŞğß\'ÈlÉ¤7üÎ\"á^Ä¾¾\nîœsÍŒ;š‡2+(8OËÜ¿óYepaÖ~ü(Ï]˜„-,ßú~Z+(Å›_(XĞ¨_Šº:ê@Ÿ–*Ä@ÜCş×+Ûw‘%Œ_c&û%Ä ÂI–p^\rœ}\0G§Ã½;¯rkİIÚ2\\ÉÓqË>T\Z4„…»\"ÌÙû»øÚ_–-7¾^C¸¹Á¯Š>Íëñk8šµrŸi†W•¯Ac¶ı\r»¡—OßÊÃÀYŠß\Zxş¹è°WØtË;)ã&ÅË8ƒÁëœÿ@ÔO&éÁ–š÷=5¤|MÊ)ïÆ+—\Z\"}M¤ÿ<\"/jˆi\"GÏ ßì«ã\Z\ZÇšÆq\r›F¿Jã¬ Q¹§ªÒê-Ç˜ÁÉÓOÄÖ—35Ç9ÑNŸaÚÇv„­Nûk(jŠƒgbÕö³F|§…øÎgöÜ¤æ<ã©Ï‰½ÒU+½`\rµ3Cí9A§ÄJI[¥Î†_‘Ôs(a³Z¬£ƒJ*#ım†#GµQº`ğüÉş?€~Šo°¶½–Vµ²\rr	9|©K›J±SYu5Bş','2009-03-27 15:06:30'),('wikidb-qs_:rcfeed:atom:limit:50:minor:','íÛnÛFö9ùŠSˆ{±HI¾l,[Rm²›lÒ8E€5cD¤©É†3´¬~À>ï7î—ì93$EÊmÉIšv›5/gæÜ¯Cé~wo§×é·\\Ç\\ñT%­®×i=9~hŸ¶µ™E\\O87`f	´¿6~ u&)\rZc’¾ïwz^wÿ±×íáß®?—Â×—Bj?Pq¬¤?â<ôpá“îÁİŸ\0âºÜe:zÓO¥c¿×éìùOŠ[Ó˜Z\\¶>xp$Âã&¼B†üÚK&É#LÄ§	‹úoyÀ¥9™à^\\?bqrH4b9òqOÚÚ®8ş9Áå©a©hƒ[[g\\ù–DB^BÊ£AKóhÔÊÅ’$3(SŸ0|lÜEhßòè`‘á©d†·ªZ›˜5)ğ—âÎ±eIˆÂcTÔA»³Óîí¿ëîõ;ûı½ùÅ[‚ÔÙĞ	ë]Ê‚K0±ÒI­‰Õ(ûŠH\0!ñZh°Fsä—;Ğvc.yŠl§Ç¯x(Ø{‚ïzİ]¯säÏß=|øàwOg›Ì‰’#1ÎR«½‹q&Bn%ŠÑh°k/UŠp¤üjÁtjkÁ®]n,II›ìTØ¤ÄŞA]‰NqÌÒYN­%ôøQd“GcsH:a‚ˆi=xô!SæeF‘û£\"Ü‚$+€×íz;´È§UÅ¾İëam×!]ü“O!acn†upº\nÅ]<;ë»Úún ¤ÚhP#k[#Ej*äP\ní †!$2QÉÔ}‹2¿$¤¼¹¸x÷úäâb5À`ğË0“&ƒ—Bf×€\ZëÀ7§<ÅĞúí`°zİ;$M[0z‚T&ìŠÃO¿¼\0&C`AÀµÃˆ#©ÊÆ8=}™&VæLÈ\nò€»È©Ÿdš:£($[¼ÿ±÷Ád×!J+UµwoPS•†«Ş{û«6&,˜ğ¼çCpâ¸£4ÒL¢î$$\n•ù¸ceQÑ\ZFŒ!J…L£…JA¡Ó|½nRc˜éz»{&rr8FÌn+¾Z`ÉİÆ­’&È\rÀq	W‚Y¦…DW±€{«ñ¼€RÆE¸ŸÓ·%Î¹1†p\Z-ò!†NdäggE6???_Ïº½¿yü¯0µ|¯§êÚÍY‘ÔíF>ÔoÏ›tó<µ\"İô7ê&‡C)¡:Ê´ö8¿Î\Z¤^©€E$7b÷,É½ñ¢ğœœ	Ó¹\"4\n	­óE$p!)IÕ¯<0ççUC&»F[—¨ÜZƒJèlô ³‹Ân™FZÌ”¡…æ@Ì$:\r…f‹~˜}¡u††²4™™iÃcàq‚‰ßèÇ½(˜fø‡V¡ABÀSŞÌƒ–½+L=ˆ[–Š@ì”¤·‹gÖÈZó’Ó*/UQPo»˜2‹‡èˆ®¸Dë”Í¬Õ£4g\ZŒJ‚_Qğv\"¯\'¦ıGâ>9ÇÜ.±ŠN(˜<CÆæË«JÆÍT–@Ût‡˜£Èú\'A¢p“%`Q,ÂŸŸ7èÛ®H&¤Œì$‰Ñ÷o1aÒà¶ıÎfí	¥W¼nµ4”…3x4wNw)H¼rÚHòôw\ZN³a®ómÀTdšL“ÁE!{iYø…*ÈÈ6İáÕìôç—°çu›Ht@ÂZ¤J8Æ”?Ú–6Œ\\£ÃİÒ&ièãfÌ[Ô‹E_<ca5¨.}Ù¨ê¹*0Ì¢á›t§×{|ĞX¨T¥<QZ`¥=³FÍn‹v‚3ø™N}}%ı=ëNx(˜\nªà¦ÒšVC}v7u!öÚÒ%Öû¨ë¬Büó×ïß½>oĞÃMå’pnj•6{îÛ¹>\\õ°è·Ët\'ĞIS\nÃ¼ÀàŠE\"tşëÊ\nMíßH ‹¢ê–H×ç& ÒÚ1ÚTo,“U-nb¥Rb°E­ªÖ6Ô.PÜ¨–7üš¿ş2\"tbhlœ	á&Iå\Z‰-DœJE®¥ÜÑÒùµ5óí\Z7¿bİŞ‡µ¬ñVºiÏ{â›È&kì%ŠzÕÖzpÇF<äE!›r¶•Œ\n²M)nº‚ÊÅt›ß\n»!şE¥|Œáésš\nÃ+‹=xGé¨quzaÿÈùP©KW¶‡œIÍÀçÒïz?˜töug×£†º Ã]g ±£ÀsìŠ‰ˆQkD(«†R±¨,Bû%•ÙZÑÆ6Ó¬fÄÈ‚åÉº9Û`G&¡‡ÕñAc¾±`•Œ]†½	òíÇôºwÛò 6Dp>‚e–¸cíÑ´na²·³ÊR9IÆ(TÊX­ÛpS\rìßhÎái\ZLÄõ>ó­-óì&®³Ï;KÎgfÅîVZCëj\"¬eMlË$©\rÑ†ÙgLÎŠN½\Z¢š\n·#*ÃDÆ,-7PÊÑbÁ‡¶ò”Ü,6Rº°´ß|VAæ›ª¸&ñõú(ÀL,ÒT¥+Áæ€\",€˜“¹òË\"S:ş¢a›,\n¨y$ßØŸ+Ù½ü ıIe}ÇÕëQú]¹~ñÍJÁø\r’Y/Ö#†ÒX»Ş--ÒÓÔlCLÕÜ]GÔÔ-Ö· \"‹ª;š7Şwöb+¶uÉnwïS’”~/$R›UıŞ Uğ*íMÊd=æ.?kçsQmÂá‡r,·‚Í¢S¸§•Ñ_E¯Vş69‘‰8×¾­ƒjğ“›ÅYğZ¥_±Ïj·Tôşşìhûû^ç¢Û88ÁNOÅ˜>`Ÿ†=¨ŸQiŞn\'½v`MƒJ¨j:.GÑ»»^÷È·ÏüäÁ‘ŸOÜï3{ãZ†ÅöNóÔ=_õùæíw$óLÚ‹QxP°ílŞÒ‚Oa0€4w,¾–wlø¾ëÁK5¦ùˆvùëƒCêŠk[Øm—^Yš·I%,şÓ´©¹,‘\0]®mT³ÙŞQC%x%ŠØeÔÄ6çÍ\'ü›¬Q“gÜ&ºúÀ´\"Æ-äekQl[sqm­Æ:ßj˜;‹µÍ\nqfõªÜÑ_Ñ¤b<1ywP™Dac{L°İ€ö[?½fTÆSl±Š‘¥k5šãZ¡=;™B\r\\&MoYTÅB§\nnû%…ÅWLÈ‹7dğe¬é5‡DZ´âs„Ã;÷‰ó°tgl\'h¿ZÈÏ ‡,¸§*“a;P‘ÂJd:Á¶ôÜİÍãòp~:™ïƒ/ó“Ì-b¦4\\òt+·˜å04ÆFı6m¼‘Ií€f,[F%[Õ7t(Ñ1ê`«·uæÿûïÿÀkrc4‘+QLÂ|~los;±í³6°\r½}ìİ°Ş2›è}“Ö„R˜A…,‡¡çşÔÎ£­t©é“jNÆK:Mëö«¨>ö†UÂo’}Ó:èm{a=B.—u¾X]È¥ikñV	:fQÄÓŠà+ù±¨¯‡b\\”×[[6Q…<ºÁª;Zùe[Hâ~¾õü“\ZÜ9ÍÛ3›5FY„]>µ DNè²;\"y”£,\nı\n%Õè{S\Z+äöı\ZrFÁG—r¸ÜŞó(P±=;aÉ˜Sk	\'§ÏÜ×`?EúÊr†ûo&²u\rÖ$ç|]AŞI™Ÿ†/Ô=7vÄ%uÙy\'T]íló-óz æ†yTÄäëöc=[<çQÒ?q©KS©šniøÉ¶Güç°9Tq\n‰ÿİ\\TÉü˜ò»±â”»]¾ä0²qÀøªÑàlóÎ–|°æ¬ŠÍ7Š)ËRg8åP\'&UœÕæ‰o]ñıÀ5³À¬jâ;ÿ+¥ı©R\ZvÛ›g€ŸÜ‰Œæğ°–Ùêİúæ9×›yÈs5-öµ/ ígUµ<Ğ(ƒ¿¢‹6×1÷ë¿KHÈ‰œsN?³°L¿sÆ_1™±¨_ÿ’¼8…z™P>„6M!úÿ“ë?¶üøôg˜7òx÷gPğZL}ÑúÓt6H?kXˆ^1QÌ¤}Gm’_\n£Í¤Dì¯H åî!Zå¾…øC8òïÃ|Õ¾j·m‚òÇFıüãÁ|¦\rù¯¡v¡İ.×úv>M·w9MxÜõzŸí4¡ûeŸ&,’×xš°ÓßÙïïìn~šP{¶Îyãò¹àİ§¢\rc½å‡WÕ9Ï=*Xs¶²ò$m±B_8xûÄéxm<Ë³Ââ6Ÿ)è4Ä„ù.ù7aqÁşØö¸uø?','2038-01-19 03:14:07'),('wikidb-qs_:rcfeed:atom:timestamp','+¶24±R220°4062345035Q²\0','2009-03-27 15:06:54'),('wikidb-qs_:rcfeed:rss:limit:50:minor:','íkSGòsò+:\\••Ú•æŒ@¸\\±}gŸCÊ(Š\Zí¤	»3ëYù÷ù~ãı’ëÙ§$œÄÉW™}ôt÷ô»{=ìïîïô†[‡O¯ã®xª…’£­¾×Ûzzô¥}ÚÕæ&âzÆ¹s“ğÑ–á×Æ´Ş‚YÊ\'£­™1ÉĞ÷ûû¯¿÷Äëğ÷NßŸ‹KáëK!µ¨8VÒŸpz¸ğiÿ±ÅŸj] Q@‚RÃ Äšdiä©tê‡Ï#si´ß÷úşÖÑ—_3&%ğò‹C#LÄ~ÌDpybXj\0ºğ¸\0lÊ5œqy~è;@Z	yyÔÆ¾!¿ö’YâŸ$<,\Z:ŒÇá¡o1ªë ‰Á­¦,¸3ã+m m2a”}EøAH¼\Z¬dı:Ë®ÈØ”q‰¤Šz3å’§Ì¨ôè\rû@ÈP*»^ïĞ¯Ş9Ú|Ÿ‰(|Î?:eÛ0Øƒ7,…A¯·ıÇÃŞŞğñ.¼xsJ4êÀ´\\ÓE!ßc%\'bš!~d¦™yM¢ëˆô©]5j ¼°±89Åd2Úµ—*\nE8JR~U	¼)ñG‘9HMÍ]è„Ip+zôèc¦ÌËŒ\"D-¸IJ‚×ï{;´È§Ußâú²uLÿâsHPhÜ§«P\\Ñåñó°†¨­!Jj¡5±ªŸ¨(Rs!§€{ê¹\0xˆ€q¢$™øĞ’LÁ/)o..Nß_\\¬~\ZgÒdğZÈì\ZPş=øú„§èißŒF«×\"kÚ‚A¨ĞP¥20cW^üô\n˜×ZŒ#ÛHU6ÁÉÉKÈ4m¥ÚT€[Á= ·,nƒ”I2MŠÉïBêC0ÙuˆÒJUãİ;Tç\\¥áª÷nòÑèYÂ‚À>\'{J#Í$êNB¢P™OzV5­¡C£k‡(2\rtf•‚B=§ùzİ¦*d&Æ(Ğ÷v÷ÚØÉá0V0‹V|µÀ0’»\r+%O€Û%\\	f7-¤áé„Ü[Mç•”2.B|Nß.B•4+=£+r¹,ñ1†Ndägg3E6???_Ïúƒ¿{=ü×˜Û}¯§êÆÍYŒ\"š·çmºy™…Z‘nOZu“Ã¡”PNeÚ\n{š‡Ig-R/˜ŒTÀ\"’›?³8Kvo½ha<ggÆt®BBëüH	\\HJRõ3ÌùyİÉ®ÑÖ%*·…×Ñ¨:[=ˆÀ¬Á¢°»c¦‘„V3gh¡93‰NC¡Ù’gS_ha„¡$Jf¦o4æ àq‚;¿Ğ#¸(˜fø‹V¡ABÀSEÆ¯ìö®0‘ mY*©SšÜ.YO kÍ+«¼TE9A½íbÈ,£? 9¸âR¯svc­¥yC¡Á¨„ øo òt?è?ñä;öàn‰ÕtBÁä9n¬Z^÷P€0èFei´MwH9Š¬$Z7Y–Ä\"üùy‹¾íŠTa2@ÎÈI’İøğ&\r.1`û¸ÕïœaÖQ\Z	¬î´4”…3x4wNw)H¼rÚHòôw\ZN²q®ómÀTdšL“ÁEáöÒ².U‘m¶ºÃ››“_Ãc¯ßÆ¢Ö\"UÂ1& üÑşBf¹F…û¥MÒĞ§Í˜w¨K¸ø†…õ ºôe«ª+U`˜EÂ×éÎ`ğd¿µP©-Jy¢´ÀZ÷Æ\Z5»+Ú	\nÌàg:õõ•Ä‚;V÷¢CÁTP7—Ö´Zê³û©©¯Ğ–.©>D]g5æ_¾ıpúö¼E·•KÂ¹­UzÚî¹ï+}¸êaÑo—éN “¦†yÁ‹Dèü×•šZ¯‰@EÕ-‘®ÏM@¬u)bt©ŞX&«FÜÄJ¥¤`‹(ZU¯m¨] ¸Q/oø52~ÃeLè,Ä2ĞØ8Âm–Ê5[ˆ28•Š\\K¹? ¥ókkæÛİüŒuûÖ²Æ;ù&œ0Äw‘MÖØKõª\r¬Íà}rÈ‹B6å,ì*d›RÜt•‹é6¿vCû/•ò)†;^¤ÏyŠMlm±§”¾€ÊW§ö;+uéáÊî˜3é¡ø\\ú}¯ç³Şîíz3c‰€–€Xo@cG9æØ£ÖˆHÖ3¥b=SY„öK*³µ’m\nÖ<šlƒ˜X°<Y·gìÈ$°:ŞoÍ7¬–±Ë°7Ã}û1½Üµ<h4ûÎG°ŒÀwª=š-à\'ëq˜ı{p–rÌI\"0®@¡RÆjİ†›z`ÿZsÏÒ`&®¨÷	ˆ™ol™g‘¸Î>ï<.9Oœ™Ø­´GÖÕDXËDìZ&Iehˆ6˜È>cò¦èÔë!ª­p{5¡2L”aÌòq¥-|h+OÉÍb#¥AûÍgd¾©Š_¯ü)`b‘¦*]	VŠ°\0bNæ^È\',‹LéøDš,\n¨[y$GìWJv/?j¿$R[ßBÅíêí¤\0ı¶\\¿øf¥`üÉ¬ëŠCi¬}ïéYj¶!¦nî®#jë›(¨È¢ê&~½ØŠmE]²Æı‡”$¥ß‰Üfu¿7h¼Î;E“2YO¹ËÏÚ¹C%ªMvø±Ë­ØfÑ)<`§µÑ_M¯Vş69‘‰8×¾«ƒjñ“ÛÅYğZ¥_g5…;*z	ÿxşO´ı=¯wÑoœ`§§bL°GÃ\'ÔÏ‡¨·Æá_&Ù¸mŠ=ØwSìÌN‰ƒ!Ú•†—ãèİ]¯Ø«7˜]}Ïó€S]—Ì®ı\"õ‹ñù­9ú»|şñ	&è9ªÅÙùÎº³ób¸=„ì9+¶˜ñ)ŒFpL2ã°¼Ã÷}^«)M<´±ÛÙ? n§¸¶¥Úvég5 ªñ)añGgĞ¥v	°ètbº¶qÊæoÇ\rÕµ¸`—Pˆm=Ï«fö›øWˆ¨ÍÖï]sZc÷ÒY[§Wg5ÕJ|«aî-ÖV2+Ä˜Õ«v<piE¥ŸŠéÌäõ~­¯ÂÖ† ˜aİ÷0ın~/Ê¨ŒgØ4CH×<´GªB{vÖ„\Z¸L\"šŞ±¨N…Î	Ühöè\Z!æ¾!î\rCsx‡®ô°ğFh.MÚ›æ@tgl¯fÏ¶óSÂ1.§©ÊdØ\rT¤°V˜ÏpKàîÆ¨îËƒêü0Çƒ/ó³Æ±ÖYzÉÓNnËahĞŒâkÚ‘Iíe*G£’Nı\r[EtĞ9ê:ÙüÿıxKn‰z%ŠY•oÂ_…ÚûœÅBlÌ¬nÌ¬cÜ&ï›´!”Âjl9\n÷«qbl¥Km™T¯é¼«?¬“úÔëŒßfû¶uĞÛîÂz„\\.ë!üm2aM!ct•¦«Å/˜õuÌ¢ˆ§5Á×ò]QÅ´(€;›xBİÚª;ü€ê²+$í¾B]}¶@£Õ1§‰xf³À$‹°§&Ø	]¶F\"r’E)^ã¤MoKc…Ü¾[CnÁ$øärÃn ·<ÂèkÏ­Y2åÔüÁñÉs÷½Ø/_¾²;Cü›‰l]„5É9_W÷RæoÇÃgê;\"ö0:‹ìDê®v¶9Ê<»ÇÜ0RzL¾n?â²	ş%jŒ=+¥¶¼£á…m^jôÏas¨‚ÿİäRÉü#•òÃ«âº]>ç0²qÀøêÑàlsDgK>ır‡JòbÊ²ÔYN9ÖÉŸIgg¾ÿ/ñ­+¾ï¹¦ã\\µBC|ç¥´?UJÃîyóğÂ™¸á™­Ù}fî‘ïz3y©æÅH½ñ¢ığ©‘ZeğW´qÑfã:æáaıw		9“ÕÎçó¹g7Mû­6ş†ÉŒEÓïâ”šeBù8Ú´…èÿÏ]ÿ±-à‡g?BÕÈãİŸAÁkmê³ÖŸ¦Ó;úÃƒ…è3ÅLÚwÔ&ù¥0ºLJ¤ğšRî>á¡Uîk…?„#ÿ>›¯ÛÃWİ®M0PşAÎ0ÿüƒEvhÙíít{ÕŸàt»åZßÎ§éö×;xÒ÷Ÿät œĞÿş\'ıœ4­s¸|Æwÿ	gËˆnùÁR}fó€*Öœ“¬<åZ¬¶Å~åÔº6å~Ío@ÖòïáÎŞpg·Õ¿+Úùw[¿…ãÓâO1ıTë£­ƒÿ','2038-01-19 03:14:07'),('wikidb-qs_:rcfeed:rss:timestamp','+¶24±R220°4062345035Q²\0','2009-03-27 15:06:54');
+/*!40000 ALTER TABLE `qs_objectcache` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_oldimage`
+--
+
+DROP TABLE IF EXISTS `qs_oldimage`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_oldimage` (
+  `oi_name` varbinary(255) NOT NULL default '',
+  `oi_archive_name` varbinary(255) NOT NULL default '',
+  `oi_size` int(10) unsigned NOT NULL default '0',
+  `oi_width` int(11) NOT NULL default '0',
+  `oi_height` int(11) NOT NULL default '0',
+  `oi_bits` int(11) NOT NULL default '0',
+  `oi_description` tinyblob NOT NULL,
+  `oi_user` int(10) unsigned NOT NULL default '0',
+  `oi_user_text` varbinary(255) NOT NULL,
+  `oi_timestamp` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `oi_metadata` mediumblob NOT NULL,
+  `oi_media_type` enum('UNKNOWN','BITMAP','DRAWING','AUDIO','VIDEO','MULTIMEDIA','OFFICE','TEXT','EXECUTABLE','ARCHIVE') default NULL,
+  `oi_major_mime` enum('unknown','application','audio','image','text','video','message','model','multipart') NOT NULL default 'unknown',
+  `oi_minor_mime` varbinary(32) NOT NULL default 'unknown',
+  `oi_deleted` tinyint(3) unsigned NOT NULL default '0',
+  `oi_sha1` varbinary(32) NOT NULL default '',
+  KEY `oi_usertext_timestamp` (`oi_user_text`,`oi_timestamp`),
+  KEY `oi_name_timestamp` (`oi_name`,`oi_timestamp`),
+  KEY `oi_name_archive_name` (`oi_name`,`oi_archive_name`(14)),
+  KEY `oi_sha1` (`oi_sha1`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_oldimage`
+--
+
+LOCK TABLES `qs_oldimage` WRITE;
+/*!40000 ALTER TABLE `qs_oldimage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_oldimage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_page`
+--
+
+DROP TABLE IF EXISTS `qs_page`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_page` (
+  `page_id` int(10) unsigned NOT NULL auto_increment,
+  `page_namespace` int(11) NOT NULL,
+  `page_title` varbinary(255) NOT NULL,
+  `page_restrictions` tinyblob NOT NULL,
+  `page_counter` bigint(20) unsigned NOT NULL default '0',
+  `page_is_redirect` tinyint(3) unsigned NOT NULL default '0',
+  `page_is_new` tinyint(3) unsigned NOT NULL default '0',
+  `page_random` double unsigned NOT NULL,
+  `page_touched` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `page_latest` int(10) unsigned NOT NULL,
+  `page_len` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`page_id`),
+  UNIQUE KEY `name_title` (`page_namespace`,`page_title`),
+  KEY `page_random` (`page_random`),
+  KEY `page_len` (`page_len`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_page`
+--
+
+LOCK TABLES `qs_page` WRITE;
+/*!40000 ALTER TABLE `qs_page` DISABLE KEYS */;
+INSERT INTO `qs_page` VALUES (1,0,'Main_Page','',3,0,0,0.831042711825,'20090326150802',2,471),(2,0,'Project_guide','',1,0,1,0.139673847513,'20090326150630',3,347),(3,0,'Configuration_guide','',0,0,1,0.086040126424,'20090326150630',4,3539);
+/*!40000 ALTER TABLE `qs_page` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_page_props`
+--
+
+DROP TABLE IF EXISTS `qs_page_props`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_page_props` (
+  `pp_page` int(11) NOT NULL,
+  `pp_propname` varbinary(60) NOT NULL,
+  `pp_value` blob NOT NULL,
+  PRIMARY KEY  (`pp_page`,`pp_propname`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_page_props`
+--
+
+LOCK TABLES `qs_page_props` WRITE;
+/*!40000 ALTER TABLE `qs_page_props` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_page_props` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_page_restrictions`
+--
+
+DROP TABLE IF EXISTS `qs_page_restrictions`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_page_restrictions` (
+  `pr_page` int(11) NOT NULL,
+  `pr_type` varbinary(60) NOT NULL,
+  `pr_level` varbinary(60) NOT NULL,
+  `pr_cascade` tinyint(4) NOT NULL,
+  `pr_user` int(11) default NULL,
+  `pr_expiry` varbinary(14) default NULL,
+  `pr_id` int(10) unsigned NOT NULL auto_increment,
+  PRIMARY KEY  (`pr_page`,`pr_type`),
+  UNIQUE KEY `pr_id` (`pr_id`),
+  KEY `pr_typelevel` (`pr_type`,`pr_level`),
+  KEY `pr_level` (`pr_level`),
+  KEY `pr_cascade` (`pr_cascade`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_page_restrictions`
+--
+
+LOCK TABLES `qs_page_restrictions` WRITE;
+/*!40000 ALTER TABLE `qs_page_restrictions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_page_restrictions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_pagelinks`
+--
+
+DROP TABLE IF EXISTS `qs_pagelinks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_pagelinks` (
+  `pl_from` int(10) unsigned NOT NULL default '0',
+  `pl_namespace` int(11) NOT NULL default '0',
+  `pl_title` varbinary(255) NOT NULL default '',
+  UNIQUE KEY `pl_from` (`pl_from`,`pl_namespace`,`pl_title`),
+  KEY `pl_namespace` (`pl_namespace`,`pl_title`,`pl_from`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_pagelinks`
+--
+
+LOCK TABLES `qs_pagelinks` WRITE;
+/*!40000 ALTER TABLE `qs_pagelinks` DISABLE KEYS */;
+INSERT INTO `qs_pagelinks` VALUES (1,0,'Best_practices'),(1,0,'Configuration_guide'),(1,0,'Project_guide'),(3,0,'Hosts_file'),(3,0,'Sample_quick_start_project'),(3,0,'Setup_Trac_for_your_project'),(3,0,'Subversion_HOWTO');
+/*!40000 ALTER TABLE `qs_pagelinks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_protected_titles`
+--
+
+DROP TABLE IF EXISTS `qs_protected_titles`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_protected_titles` (
+  `pt_namespace` int(11) NOT NULL,
+  `pt_title` varbinary(255) NOT NULL,
+  `pt_user` int(10) unsigned NOT NULL,
+  `pt_reason` tinyblob,
+  `pt_timestamp` binary(14) NOT NULL,
+  `pt_expiry` varbinary(14) NOT NULL default '',
+  `pt_create_perm` varbinary(60) NOT NULL,
+  PRIMARY KEY  (`pt_namespace`,`pt_title`),
+  KEY `pt_timestamp` (`pt_timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_protected_titles`
+--
+
+LOCK TABLES `qs_protected_titles` WRITE;
+/*!40000 ALTER TABLE `qs_protected_titles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_protected_titles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_querycache`
+--
+
+DROP TABLE IF EXISTS `qs_querycache`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_querycache` (
+  `qc_type` varbinary(32) NOT NULL,
+  `qc_value` int(10) unsigned NOT NULL default '0',
+  `qc_namespace` int(11) NOT NULL default '0',
+  `qc_title` varbinary(255) NOT NULL default '',
+  KEY `qc_type` (`qc_type`,`qc_value`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_querycache`
+--
+
+LOCK TABLES `qs_querycache` WRITE;
+/*!40000 ALTER TABLE `qs_querycache` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_querycache` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_querycache_info`
+--
+
+DROP TABLE IF EXISTS `qs_querycache_info`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_querycache_info` (
+  `qci_type` varbinary(32) NOT NULL default '',
+  `qci_timestamp` binary(14) NOT NULL default '19700101000000',
+  UNIQUE KEY `qci_type` (`qci_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_querycache_info`
+--
+
+LOCK TABLES `qs_querycache_info` WRITE;
+/*!40000 ALTER TABLE `qs_querycache_info` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_querycache_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_querycachetwo`
+--
+
+DROP TABLE IF EXISTS `qs_querycachetwo`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_querycachetwo` (
+  `qcc_type` varbinary(32) NOT NULL,
+  `qcc_value` int(10) unsigned NOT NULL default '0',
+  `qcc_namespace` int(11) NOT NULL default '0',
+  `qcc_title` varbinary(255) NOT NULL default '',
+  `qcc_namespacetwo` int(11) NOT NULL default '0',
+  `qcc_titletwo` varbinary(255) NOT NULL default '',
+  KEY `qcc_type` (`qcc_type`,`qcc_value`),
+  KEY `qcc_title` (`qcc_type`,`qcc_namespace`,`qcc_title`),
+  KEY `qcc_titletwo` (`qcc_type`,`qcc_namespacetwo`,`qcc_titletwo`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_querycachetwo`
+--
+
+LOCK TABLES `qs_querycachetwo` WRITE;
+/*!40000 ALTER TABLE `qs_querycachetwo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_querycachetwo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_recentchanges`
+--
+
+DROP TABLE IF EXISTS `qs_recentchanges`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_recentchanges` (
+  `rc_id` int(11) NOT NULL auto_increment,
+  `rc_timestamp` varbinary(14) NOT NULL default '',
+  `rc_cur_time` varbinary(14) NOT NULL default '',
+  `rc_user` int(10) unsigned NOT NULL default '0',
+  `rc_user_text` varbinary(255) NOT NULL,
+  `rc_namespace` int(11) NOT NULL default '0',
+  `rc_title` varbinary(255) NOT NULL default '',
+  `rc_comment` varbinary(255) NOT NULL default '',
+  `rc_minor` tinyint(3) unsigned NOT NULL default '0',
+  `rc_bot` tinyint(3) unsigned NOT NULL default '0',
+  `rc_new` tinyint(3) unsigned NOT NULL default '0',
+  `rc_cur_id` int(10) unsigned NOT NULL default '0',
+  `rc_this_oldid` int(10) unsigned NOT NULL default '0',
+  `rc_last_oldid` int(10) unsigned NOT NULL default '0',
+  `rc_type` tinyint(3) unsigned NOT NULL default '0',
+  `rc_moved_to_ns` tinyint(3) unsigned NOT NULL default '0',
+  `rc_moved_to_title` varbinary(255) NOT NULL default '',
+  `rc_patrolled` tinyint(3) unsigned NOT NULL default '0',
+  `rc_ip` varbinary(40) NOT NULL default '',
+  `rc_old_len` int(11) default NULL,
+  `rc_new_len` int(11) default NULL,
+  `rc_deleted` tinyint(3) unsigned NOT NULL default '0',
+  `rc_logid` int(10) unsigned NOT NULL default '0',
+  `rc_log_type` varbinary(255) default NULL,
+  `rc_log_action` varbinary(255) default NULL,
+  `rc_params` blob,
+  PRIMARY KEY  (`rc_id`),
+  KEY `rc_timestamp` (`rc_timestamp`),
+  KEY `rc_namespace_title` (`rc_namespace`,`rc_title`),
+  KEY `rc_cur_id` (`rc_cur_id`),
+  KEY `new_name_timestamp` (`rc_new`,`rc_namespace`,`rc_timestamp`),
+  KEY `rc_ip` (`rc_ip`),
+  KEY `rc_ns_usertext` (`rc_namespace`,`rc_user_text`),
+  KEY `rc_user_text` (`rc_user_text`,`rc_timestamp`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_recentchanges`
+--
+
+LOCK TABLES `qs_recentchanges` WRITE;
+/*!40000 ALTER TABLE `qs_recentchanges` DISABLE KEYS */;
+INSERT INTO `qs_recentchanges` VALUES (1,'20090326150629','20090326150629',0,'192.168.181.2',0,'Main_Page','',0,0,0,1,2,1,0,0,'',0,'',NULL,471,0,0,NULL,NULL,NULL),(2,'20090326150629','20090326150629',0,'192.168.144.1',0,'Project_guide','New page: = Project start guide =  == Create Subversion repository == 1. Login as \'svn\' user, password \'subversion\'    su - svn  2. Use svnadmin to create new repository:    svnadmin create newproje...',0,0,1,2,3,0,1,0,'',0,'',NULL,347,0,0,NULL,NULL,NULL),(3,'20090326150629','20090326150629',0,'192.168.144.1',0,'Configuration_guide','/* Trac 0.11.3 */',0,0,1,3,4,0,1,0,'',0,'',NULL,3539,0,0,NULL,NULL,NULL),(4,'20090326133634','20090326133634',0,'MediaWiki default',0,'Main_Page','',0,0,1,1,1,0,1,0,'',0,'',NULL,449,0,0,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `qs_recentchanges` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_redirect`
+--
+
+DROP TABLE IF EXISTS `qs_redirect`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_redirect` (
+  `rd_from` int(10) unsigned NOT NULL default '0',
+  `rd_namespace` int(11) NOT NULL default '0',
+  `rd_title` varbinary(255) NOT NULL default '',
+  PRIMARY KEY  (`rd_from`),
+  KEY `rd_ns_title` (`rd_namespace`,`rd_title`,`rd_from`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_redirect`
+--
+
+LOCK TABLES `qs_redirect` WRITE;
+/*!40000 ALTER TABLE `qs_redirect` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_redirect` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_revision`
+--
+
+DROP TABLE IF EXISTS `qs_revision`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_revision` (
+  `rev_id` int(10) unsigned NOT NULL auto_increment,
+  `rev_page` int(10) unsigned NOT NULL,
+  `rev_text_id` int(10) unsigned NOT NULL,
+  `rev_comment` tinyblob NOT NULL,
+  `rev_user` int(10) unsigned NOT NULL default '0',
+  `rev_user_text` varbinary(255) NOT NULL default '',
+  `rev_timestamp` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `rev_minor_edit` tinyint(3) unsigned NOT NULL default '0',
+  `rev_deleted` tinyint(3) unsigned NOT NULL default '0',
+  `rev_len` int(10) unsigned default NULL,
+  `rev_parent_id` int(10) unsigned default NULL,
+  PRIMARY KEY  (`rev_page`,`rev_id`),
+  UNIQUE KEY `rev_id` (`rev_id`),
+  KEY `rev_timestamp` (`rev_timestamp`),
+  KEY `page_timestamp` (`rev_page`,`rev_timestamp`),
+  KEY `user_timestamp` (`rev_user`,`rev_timestamp`),
+  KEY `usertext_timestamp` (`rev_user_text`,`rev_timestamp`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=binary MAX_ROWS=10000000 AVG_ROW_LENGTH=1024;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_revision`
+--
+
+LOCK TABLES `qs_revision` WRITE;
+/*!40000 ALTER TABLE `qs_revision` DISABLE KEYS */;
+INSERT INTO `qs_revision` VALUES (1,1,1,'',0,'MediaWiki default','20090326133634',0,0,449,0),(2,1,2,'',0,'192.168.181.2','20090326150629',0,0,471,1),(3,2,3,'New page: = Project start guide =  == Create Subversion repository == 1. Login as \'svn\' user, password \'subversion\'    su - svn  2. Use svnadmin to create new repository:    svnadmin create newproje...',0,'192.168.144.1','20090326150629',0,0,347,0),(4,3,4,'/* Trac 0.11.3 */',0,'192.168.144.1','20090326150629',0,0,3539,0);
+/*!40000 ALTER TABLE `qs_revision` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_searchindex`
+--
+
+DROP TABLE IF EXISTS `qs_searchindex`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_searchindex` (
+  `si_page` int(10) unsigned NOT NULL,
+  `si_title` varchar(255) NOT NULL default '',
+  `si_text` mediumtext NOT NULL,
+  UNIQUE KEY `si_page` (`si_page`),
+  FULLTEXT KEY `si_title` (`si_title`),
+  FULLTEXT KEY `si_text` (`si_text`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_searchindex`
+--
+
+LOCK TABLES `qs_searchindex` WRITE;
+/*!40000 ALTER TABLE `qs_searchindex` DISABLE KEYS */;
+INSERT INTO `qs_searchindex` VALUES (1,'main page','  welcome tou800 capgemini csdu800 quick start   configuration guide project guide best practices howu800 tou800 useu800 andu800 configure wiki howu800 tou800 useu800 andu800 configure wiki howu800 tou800 useu800 andu800 configure wiki user\'su800 guide configuration settings list mediawiki faqu800 mediawiki release mailing list ');
+/*!40000 ALTER TABLE `qs_searchindex` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_site_stats`
+--
+
+DROP TABLE IF EXISTS `qs_site_stats`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_site_stats` (
+  `ss_row_id` int(10) unsigned NOT NULL,
+  `ss_total_views` bigint(20) unsigned default '0',
+  `ss_total_edits` bigint(20) unsigned default '0',
+  `ss_good_articles` bigint(20) unsigned default '0',
+  `ss_total_pages` bigint(20) default '-1',
+  `ss_users` bigint(20) default '-1',
+  `ss_active_users` bigint(20) default '-1',
+  `ss_admins` int(11) default '-1',
+  `ss_images` int(11) default '0',
+  UNIQUE KEY `ss_row_id` (`ss_row_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_site_stats`
+--
+
+LOCK TABLES `qs_site_stats` WRITE;
+/*!40000 ALTER TABLE `qs_site_stats` DISABLE KEYS */;
+INSERT INTO `qs_site_stats` VALUES (1,4,2,0,1,1,-1,1,0);
+/*!40000 ALTER TABLE `qs_site_stats` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_templatelinks`
+--
+
+DROP TABLE IF EXISTS `qs_templatelinks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_templatelinks` (
+  `tl_from` int(10) unsigned NOT NULL default '0',
+  `tl_namespace` int(11) NOT NULL default '0',
+  `tl_title` varbinary(255) NOT NULL default '',
+  UNIQUE KEY `tl_from` (`tl_from`,`tl_namespace`,`tl_title`),
+  KEY `tl_namespace` (`tl_namespace`,`tl_title`,`tl_from`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_templatelinks`
+--
+
+LOCK TABLES `qs_templatelinks` WRITE;
+/*!40000 ALTER TABLE `qs_templatelinks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_templatelinks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_text`
+--
+
+DROP TABLE IF EXISTS `qs_text`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_text` (
+  `old_id` int(10) unsigned NOT NULL auto_increment,
+  `old_text` mediumblob NOT NULL,
+  `old_flags` tinyblob NOT NULL,
+  PRIMARY KEY  (`old_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=binary MAX_ROWS=10000000 AVG_ROW_LENGTH=10240;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_text`
+--
+
+LOCK TABLES `qs_text` WRITE;
+/*!40000 ALTER TABLE `qs_text` DISABLE KEYS */;
+INSERT INTO `qs_text` VALUES (1,'<big>\'\'\'MediaWiki has been successfully installed.\'\'\'</big>\n\nConsult the [http://meta.wikimedia.org/wiki/Help:Contents User\'s Guide] for information on using the wiki software.\n\n== Getting started ==\n* [http://www.mediawiki.org/wiki/Manual:Configuration_settings Configuration settings list]\n* [http://www.mediawiki.org/wiki/Manual:FAQ MediaWiki FAQ]\n* [https://lists.wikimedia.org/mailman/listinfo/mediawiki-announce MediaWiki release mailing list]','utf-8'),(2,'<big>\'\'\'Welcome to Capgemini CSD Quick Start!\'\'\'</big>\n\n* [[Configuration guide]]\n* [[Project guide]]\n* [[Best practices]]\n\n== How to use and configure Wiki ==\n* [http://meta.wikimedia.org/wiki/Help:Contents User\'s Guide]\n* [http://www.mediawiki.org/wiki/Manual:Configuration_settings Configuration settings list]\n* [http://www.mediawiki.org/wiki/Manual:FAQ MediaWiki FAQ]\n* [https://lists.wikimedia.org/mailman/listinfo/mediawiki-announce MediaWiki release mailing list]','utf-8'),(3,'= Project start guide =\n\n== Create Subversion repository ==\n1. Login as \'svn\' user, password \'subversion\'\n\n  su - svn\n\n2. Use svnadmin to create new repository:\n\n  svnadmin create newproject\n\n3. Change access right for repository folder:\n\n  chmod -R g+w newproject\n\n== Add project users ==\n\n== Create Trac workplace ==\n\n== Add project to hudson ==','utf-8'),(4,'CDS Quickstart consists of the following pre-configured components:\n\n__TOC__\n\n==Ubuntu Linux 8.10 (Server)==\n\nThe server does not have GUI and accessible through SSH using following credentials:\n<pre>\nUser: tuxdistro\nPassword: tuxdistro\n</pre>\n==Apache2 Web Server==\n\nThe server runs on port 80 and configured to handle pages for other servers\n\n==Webmin 1.450==\n\nWebmin is a service, that allows to configure Ubuntu Server via Web interface.\n\nIn order to access this service, following line needs to be added to the [[hosts file]]:\n<pre>\n127.0.0.1  webmin\n</pre>\n\n[http://webmin/ http://webmin/]\n\n==Hudson 1.280==\n\nHudson is continuous integration server.\n\n[http://localhost/hudson/ http://localhost/hudson/]\n\nHudson has the [[sample quick start project]] configured and running.\n\n==Trac 0.11.3==\n\nTrac is a web-based software project management and bug/issue tracking system emphasizing ease of use and low ceremony. It provides an integrated Wiki, an interface to version control systems, and a number of convenient ways to stay on top of events and changes within a project. \n\nTrac is configured for Demo project. In order to use it for your project, you will need to [[setup Trac for your project]].\n\nTrac root is located here:\n[http://localhost/trac/ http://localhost/trac/]\n\n===Trac authentication===\n\nTrac uses the same user names and passwords as Subversion, discussed a bit later in this document.\n\n==MySQL 5.1==\n\nMySQL is an open source database.\n\n<pre>\nUser: root\nPassword: tuxdistro\n</pre>\n\n[http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]\n\n==Subversion 1.5.1 (r32289)==\n\nSubversion repository for a [[sample quick start project]] is in /usr/svn/demo\n\nSubversion has its own user:\n\n<pre>\nUser: svn\nPassword: subversion\n</pre>\n\n[[Subversion HOWTO]]\n\n[http://localhost/svn/ http://localhost/svn/]\n\n===Repository access===\nSubversion repositories require a valid user to be specified in <pre>/etc/svn-auth-file</pre> In order to add user to that file, following command needs to be executed: <pre>sudo htpasswd /etc/svn-auth-file <new user name></pre>\n\nFor example, to add user jdoe: \n<pre>\nsudo htpasswd /etc/svn-auth-file jdoe\n</pre>\n\nPlease note, that this authentication mode allows read-only access for read operations and will require users to be registered for write operations. There are other [http://svnbook.red-bean.com/en/1.0/ch06s04.html security schemes] available for Subversion, you should implement them yourself, if you need to.\n\n==Maven 2.0.9==\n\nMaven is located in /usr/share/maven2\n\nMaven configuration file, settings.xml is located in /etc/maven2/\n\nMaven is restricted to use only local repository (see Archiva section). It is recommended to keep that restriction, so Maven will not try to connect directly to any of the repositories. \n\nIf it is required to let Maven connect to internet, following lines should be commented from settings.xml:\n<pre>\n    <mirror>\n      <id>archiva.default</id>\n      <url>http://localhost/archiva/repository/localqs/</url>\n      <mirrorOf>*</mirrorOf>\n    </mirror>\n</pre>\n\n==Apache Archiva 1.1.3==\n\nArtifact repository manager.\n\n\nAdministrator credentials:\n<pre>\nUser: admin\nPassword: 4dm1n\n</pre>\n\nMaven is instructed to use those credentials in order to get files from repository:\n<pre>\nUser: quickstart\nPassword: password\n</pre>\n\nQuickstart repository can be reached from:\n[http://localhost/archiva/repository/localqs/ http://localhost/archiva/repository/localqs/]\n\n[http://localhost/archiva/ http://localhost/archiva/]\n\n==Sun JDK 1.6.0_10==\n\n==Tomcat 6.0.18==','utf-8');
+/*!40000 ALTER TABLE `qs_text` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_trackbacks`
+--
+
+DROP TABLE IF EXISTS `qs_trackbacks`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_trackbacks` (
+  `tb_id` int(11) NOT NULL auto_increment,
+  `tb_page` int(11) default NULL,
+  `tb_title` varbinary(255) NOT NULL,
+  `tb_url` blob NOT NULL,
+  `tb_ex` blob,
+  `tb_name` varbinary(255) default NULL,
+  PRIMARY KEY  (`tb_id`),
+  KEY `tb_page` (`tb_page`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_trackbacks`
+--
+
+LOCK TABLES `qs_trackbacks` WRITE;
+/*!40000 ALTER TABLE `qs_trackbacks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_trackbacks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_transcache`
+--
+
+DROP TABLE IF EXISTS `qs_transcache`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_transcache` (
+  `tc_url` varbinary(255) NOT NULL,
+  `tc_contents` blob,
+  `tc_time` int(11) NOT NULL,
+  UNIQUE KEY `tc_url_idx` (`tc_url`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_transcache`
+--
+
+LOCK TABLES `qs_transcache` WRITE;
+/*!40000 ALTER TABLE `qs_transcache` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_transcache` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_updatelog`
+--
+
+DROP TABLE IF EXISTS `qs_updatelog`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_updatelog` (
+  `ul_key` varbinary(255) NOT NULL,
+  PRIMARY KEY  (`ul_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_updatelog`
+--
+
+LOCK TABLES `qs_updatelog` WRITE;
+/*!40000 ALTER TABLE `qs_updatelog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_updatelog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_user`
+--
+
+DROP TABLE IF EXISTS `qs_user`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_user` (
+  `user_id` int(10) unsigned NOT NULL auto_increment,
+  `user_name` varbinary(255) NOT NULL default '',
+  `user_real_name` varbinary(255) NOT NULL default '',
+  `user_password` tinyblob NOT NULL,
+  `user_newpassword` tinyblob NOT NULL,
+  `user_newpass_time` binary(14) default NULL,
+  `user_email` tinyblob NOT NULL,
+  `user_options` blob NOT NULL,
+  `user_touched` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `user_token` binary(32) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  `user_email_authenticated` binary(14) default NULL,
+  `user_email_token` binary(32) default NULL,
+  `user_email_token_expires` binary(14) default NULL,
+  `user_registration` binary(14) default NULL,
+  `user_editcount` int(11) default NULL,
+  PRIMARY KEY  (`user_id`),
+  UNIQUE KEY `user_name` (`user_name`),
+  KEY `user_email_token` (`user_email_token`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_user`
+--
+
+LOCK TABLES `qs_user` WRITE;
+/*!40000 ALTER TABLE `qs_user` DISABLE KEYS */;
+INSERT INTO `qs_user` VALUES (1,'WikiSysop','',':B:4389591f:e806800e82ce6c37c076e22c9e96dc24','',NULL,'','quickbar=1\nunderline=2\ncols=80\nrows=25\nsearchlimit=20\ncontextlines=5\ncontextchars=50\ndisablesuggest=0\nskin=\nmath=1\nusenewrc=0\nrcdays=7\nrclimit=50\nwllimit=250\nhideminor=0\nhighlightbroken=1\nstubthreshold=0\npreviewontop=1\npreviewonfirst=0\neditsection=1\neditsectiononrightclick=0\neditondblclick=0\neditwidth=0\nshowtoc=1\nshowtoolbar=1\nminordefault=0\ndate=default\nimagesize=2\nthumbsize=2\nrememberpassword=0\nnocache=0\ndiffonly=0\nshowhiddencats=0\nnorollbackdiff=0\nenotifwatchlistpages=0\nenotifusertalkpages=1\nenotifminoredits=0\nenotifrevealaddr=0\nshownumberswatching=1\nfancysig=0\nexternaleditor=0\nexternaldiff=0\nforceeditsummary=0\nshowjumplinks=1\njustify=0\nnumberheadings=0\nuselivepreview=0\nwatchlistdays=3\nextendwatchlist=0\nwatchlisthideminor=0\nwatchlisthidebots=0\nwatchlisthideown=0\nwatchlisthideanons=0\nwatchlisthideliu=0\nwatchcreations=0\nwatchdefault=0\nwatchmoves=0\nwatchdeletion=0\nnoconvertlink=0\nvariant=en\nlanguage=en\nsearchNs0=1','20090326133639','ccca9dccaf3733f4c6ca8c261bda1a94',NULL,'\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0',NULL,'20090326133634',0);
+/*!40000 ALTER TABLE `qs_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_user_groups`
+--
+
+DROP TABLE IF EXISTS `qs_user_groups`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_user_groups` (
+  `ug_user` int(10) unsigned NOT NULL default '0',
+  `ug_group` varbinary(16) NOT NULL default '',
+  PRIMARY KEY  (`ug_user`,`ug_group`),
+  KEY `ug_group` (`ug_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_user_groups`
+--
+
+LOCK TABLES `qs_user_groups` WRITE;
+/*!40000 ALTER TABLE `qs_user_groups` DISABLE KEYS */;
+INSERT INTO `qs_user_groups` VALUES (1,'bureaucrat'),(1,'sysop');
+/*!40000 ALTER TABLE `qs_user_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_user_newtalk`
+--
+
+DROP TABLE IF EXISTS `qs_user_newtalk`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_user_newtalk` (
+  `user_id` int(11) NOT NULL default '0',
+  `user_ip` varbinary(40) NOT NULL default '',
+  `user_last_timestamp` binary(14) NOT NULL default '\0\0\0\0\0\0\0\0\0\0\0\0\0\0',
+  KEY `user_id` (`user_id`),
+  KEY `user_ip` (`user_ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_user_newtalk`
+--
+
+LOCK TABLES `qs_user_newtalk` WRITE;
+/*!40000 ALTER TABLE `qs_user_newtalk` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_user_newtalk` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qs_watchlist`
+--
+
+DROP TABLE IF EXISTS `qs_watchlist`;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+CREATE TABLE `qs_watchlist` (
+  `wl_user` int(10) unsigned NOT NULL,
+  `wl_namespace` int(11) NOT NULL default '0',
+  `wl_title` varbinary(255) NOT NULL default '',
+  `wl_notificationtimestamp` varbinary(14) default NULL,
+  UNIQUE KEY `wl_user` (`wl_user`,`wl_namespace`,`wl_title`),
+  KEY `namespace_title` (`wl_namespace`,`wl_title`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping data for table `qs_watchlist`
+--
+
+LOCK TABLES `qs_watchlist` WRITE;
+/*!40000 ALTER TABLE `qs_watchlist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qs_watchlist` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2009-03-26 15:16:22

@@ -52,8 +52,6 @@ checkinstall()
     fi
 }
 
-demo_user="amaksimo"
-demp_pwd="amaksimo"
 dttime=`date +"%y%m%d_%H%M%S"`
 startdir=`pwd`
 mkdir -p ${startdir}/logs/${dttime}/
@@ -97,29 +95,15 @@ techo "Configuring Apache to use Subversion"
 cp resources/dav_svn.conf /etc/apache2/mods-available/dav_svn.conf
 cp resources/initial-svn-users /etc/svn-auth-file
 
-###################################################
-#/etc/init.d/apache2 restart
-
-techo "Installing svk"
-aptget "svk"
-
-techo "Creating Demo project repository"
+techo "Creating Demo project Subversion repository"
 rm -rf /var/lib/svn/cappdemo
+mkdir /var/lib/svn/
 svnadmin create /var/lib/svn/cappdemo
-mkdir ./.svk
-cp resources/svk_config ./.svk/config
-#svk depotmap --detach ""  >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
-#svk depotmap "" /var/lib/svn/capp  >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
-svk mirror http://www.minimalsoftware.com/sandpit/build_demo_1 //demo < resources/svk_response >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
-svk sync //demo < resources/svk_response >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
-chown -R www-data.www-data /var/lib/svn
-
-#techo "Creating Demo project repository"
-#svnadmin create /var/lib/svn/demo
-#chown -R www-data.www-data /var/lib/svn/demo/
-#chmod -R g+w /var/lib/svn/demo/
-#cd /var/lib/svn/
-#svnadmin load demo < ${startdir}/resources/new_demo.dump >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
+mkdir ./demo
+svn export http://www.minimalsoftware.com/sandpit/build_demo_1 demo/
+mkdir demo/branches
+mkdir demo/tags
+sudo svn import demo/ file:///var/lib/svn/cappdemo/ -m "Initial import"
 
 cd ${startdir}
 

@@ -86,6 +86,8 @@ fi
 
 techo "Updating repositories"
 apt-get -y update  >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
+techo "Installing Unzip"
+aptget unzip
 techo "Installing Subversion"
 aptget "subversion subversion-tools libapache2-svn"
 mkdir -p /var/lib/svn
@@ -176,8 +178,10 @@ a2ensite trac >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
 techo "Configuring Artifactory"
 service tomcat6 stop >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
 techo "Downloading Artifactory"
-down "http://kent.dl.sourceforge.net/sourceforge/artifactory/artifactory-2.0.5.war"
-cp download/artifactory-2.0.5.war /var/lib/tomcat6/webapps/artifactory.war
+down "http://downloads.sourceforge.net/project/artifactory/artifactory/2.1/artifactory-2.1.3.zip?use_mirror=kent"
+unzip download/artifactory-2.1.3.zip *.war
+cp artifactory-2.1.3/webapps/artifactory.war /var/lib/tomcat6/webapps/
+rm -rf artifactory-2.1.3/
 chown -R tomcat6.tomcat6 /usr/share/tomcat6/
 service tomcat6 start >> ${startdir}/logs/${dttime}/setup_qs.log 2>&1
 
